@@ -1,0 +1,6 @@
+name: Talyxian's Space
+source: "."
+dest: "build"
+ignore:
+  - .git/*
+  - build/*

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% if is_post %}
+          <title>Talyxian Space: {{ title }}</title>
+        {% else %}
+       	  <title>Talyxian Space</title>
+        {% endif %}
+    </head>
+    <style>
+      #nav{
+        position: absolute;
+        width: 150px;
+        min-height: 100%;
+        padding: 5px;
+        margin: 0px;
+        border: 0px;
+        background-color: #FFD9D9;
+      }
+
+      body{
+        background-color: #E0ACF6;
+        padding: 0px;
+        margin: 0px;
+        border: 0px;
+      }
+
+      div{
+        padding: 0px;
+        margin: 0px;
+        border: 0px;
+      }
+
+      #title{
+        background-color: #BAD6FD;
+        padding-left: 20px;
+        border-top-style: solid;
+        border-top-width: 10px;
+        border-color: #BAD6FD;
+        padding-bottom: 5px;
+        margin: 0px;
+        white-space:0;
+      }
+
+      #main{
+        position: absolute;
+        margin: 10px;
+        margin-left: 170px;
+        clear: left;
+      }
+    </style>
+    <body>
+    <div id="title">
+        <h1>Talyxian Space!</h1>
+    </div>
+    {% include '_layouts/nav.liquid' %}
+    <div id="main">
+      {% if is_post %}
+        {% include '_layouts/post.liquid' %}
+      {% else %}
+        {{ content }}
+      {% endif %}
+      <br/><br/>
+    </div>
+    
+  </body>
+</html>
