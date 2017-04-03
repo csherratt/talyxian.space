@@ -1,0 +1,7 @@
+[vcas]
+VcosOem=be
+MaxTasks=32
+MaxDsps=3
+ErrorReport=Online
+[ErrorReport=LogFile]
+

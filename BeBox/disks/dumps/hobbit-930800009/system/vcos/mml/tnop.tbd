@@ -1,0 +1,11 @@
+/* tnop.tbd
+*/
+
+IdleTime:		100		/* number of .1ms nops in BLevel */
+Local: p_tnop		0x0 = IdleTime	
+
+tnop( BLevel)
+{
+pbuf	p_tnop
+}
+

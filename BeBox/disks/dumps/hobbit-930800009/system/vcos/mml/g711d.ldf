@@ -1,0 +1,59 @@
+/*****************************************************************************/
+/*    G711D.LDF
+/*****************************************************************************/
+/* Convert 7/8-bit mulaw/alaw to 16-bit linear
+/*
+/* 	input:	ain AIAO buffer
+/*		The format of the g.711d input data stream is 8-bit samples
+/*		in a format as defined by the mode word.
+/*
+/* 	output:	aout AIAO buffer
+/*		The format of the output is 16-bit linear samples.
+/*
+/* 	pbuf:	pbuf parameter buffer with one 32-bit word:
+/*		long mode:
+/*
+/*	long mode:	mulaw/alaw	bits-used	ltor/rtol
+/*	----------	---------	---------	---------
+/*	0x003		mulaw		8bit		RTOL	
+/*	0x103		mulaw		8bit		LTOR
+/*	0x203		mulaw		7bit		RTOL
+/*	0x303		mulaw		7bit		LTOR
+/*	0x000		alaw		8bit		RTOL
+/*	0x100		alaw		8bit		LTOR
+/*	0x200		alaw		7bit		RTOL
+/*	0x300		alaw		7bit		LTOR
+/*
+/*	mode parameter notes:
+/*		b31-b10: reserved, set to 0
+/*		b9: 8/7 bit selection
+/*			0: 8 bit input data
+/*			1: 7 bit input data, ignore bit m0
+/*			7-bit is used when one bit of the 8-bit
+/*			sample is used by the channel for transmission of data.
+/*		b8: bit order selection 
+/*			0: RTOL (Right to Left), bit 0 is sign bit
+/*				b7 b6 b5 b4 b3 b2 b1 b0
+/*				m0 m1 m2 m3 c1 c2 c3 s
+/*			1: LTOR (Left to Right), bit 7 is sign bit
+/*				b7 b6 b5 b4 b3 b2 b1 b0
+/*				s  c3 c2 c1 m3 m2 m1 m0 
+/*		b7-b0: dauc register setting- mulaw or alaw conversion:
+/*			0x00: mulaw conversion
+/*			0x03: alaw conversion
+/*
+/*****************************************************************************/
+
+Sections
+{
+	main    sPROG
+	cmain   sPROG
+	ain     sAIAO   4       4
+	aout    sAIAO   8       8
+	pbuf    sPARAM
+}
+
+CacheMem
+{
+	cmain ain aout
+}

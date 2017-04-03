@@ -1,0 +1,48 @@
+/* xo8t32.src
+*/
+
+Global: AudOut_8000_80_16_1	160
+Local: 	x16			320
+Global: AudOut_16000_160_16_1	320
+Local: 	x32			640
+Extern: AudOut_32000_320_16_1
+
+/* 8t16 */
+src1t2( ILevel)
+{
+ain	AudOut_8000_80_16_1
+aout	x16
+}
+
+clra( ILevel)
+{
+ain	AudOut_8000_80_16_1
+}
+
+vatax( ILevel)
+{
+ain	x16
+aout	AudOut_16000_160_16_1	
+pbuf	0x0
+}
+
+/* 16t32 */
+src1t2( ILevel)
+{
+ain	AudOut_16000_160_16_1	
+aout	x32
+}
+
+clra( ILevel)
+{
+ain	AudOut_16000_160_16_1	
+}
+
+vatax( ILevel)
+{
+ain	x32
+aout 	AudOut_32000_320_16_1	
+pbuf	0x0
+}
+
+

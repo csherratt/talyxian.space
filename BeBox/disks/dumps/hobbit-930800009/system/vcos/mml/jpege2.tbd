@@ -1,0 +1,12 @@
+/* task build file */
+
+Extern: jpeals
+Local: eialas 0x8000
+Extern: emalas
+
+jpege2( BLevel )
+{
+	jparms jpeals
+	eififo eialas
+	eofifo emalas
+}

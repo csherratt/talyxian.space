@@ -1,0 +1,34 @@
+/* ++++++++++
+	mpeg_play.tbd
+	Copyright (C) 1992 Be Inc.  All Rights Reserved.
+	Task build file for the mpeg play task
+
+	Modification History (most recent first):
+	02 feb 93	rwh	new today
++++++ */
+
+FrameSamples:	1152
+SampleSize:	2
+AiaoSize:	SampleSize*FrameSamples		/* No of bytes per frame */
+FifoSize:	100*AiaoSize			/* fifo size is N*AiaoSize */
+
+/* ---
+   ioname declarations for this task
+--- */
+
+Local: mpeg_decode_param 0 = 1 0 12	/* default left-to-right, no reset, */
+					/* 192 kbps into 48khz */
+Local: mpeg_fifo FifoSize		/* fifo buffer for input from host */
+Extern: left_speaker				/* audio device driver speaker AIAO */
+
+/* ---
+   modules and their interconnections
+--- */
+
+ml2d (BLevel)				/* mpeg fifo -> speaker aiao */
+{
+	iparam	mpeg_decode_param
+	fin 	mpeg_fifo
+	aout	left_speaker
+}
+

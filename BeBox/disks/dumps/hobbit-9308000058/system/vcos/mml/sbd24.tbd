@@ -1,0 +1,17 @@
+/* sbd24.tbd
+*/
+
+FrameRate:	100
+SampleRate:	8000
+FrameSize:	2*SampleRate/FrameRate  /* Bytesize of one channel's frame */
+SbcSize:	FrameSize/4		/* 128kbps pcm -> 32kbps subband code */
+					/* every 4th byte is zero, ie: 24kbps */
+
+Local:	sbdin	SbcSize
+Local:	sbdout	FrameSize
+
+sbd24( BLevel)
+	{
+	ain 	sbdin
+	aout	sbdout
+	}

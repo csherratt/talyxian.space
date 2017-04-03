@@ -1,0 +1,42 @@
+/* ++++++++++
+	local.tbd
+	Copyright (C) 1993 Be Inc.  All Rights Reserved.
+	Task build file for the local line play/record task
+
+	Modification History (most recent first):
+	08 oct 93	rwh	new today
++++++ */
+
+FrameRate:	100
+SampleRate:	8000
+FrameSamples:	SampleRate/FrameRate
+SampleSize:	2
+AiaoSize:	SampleSize*FrameSamples		/* No of bytes per frame */
+FifoSize:	50*AiaoSize			/* fifo size is N*AiaoSize */
+
+/* ---
+   ioname declarations for this task
+--- */
+
+Local: play_fifo FifoSize		/* fifo buffer for output to line */
+Local: record_fifo FifoSize		/* fifo buffer for input from line */
+Extern: TelCon_8_1			/* param buf for daa module */
+Extern: LocIn_8_1			/* output to local line */
+Extern: LocOut_8_1			/* input from local line */
+
+/* ---
+   modules and their interconnections
+--- */
+
+fta(BLevel)
+{
+	aout	LocOut_8_1
+	fin 	play_fifo
+}
+
+atf (BLevel)
+{
+	ain	LocIn_8_1
+	fout	record_fifo
+}
+

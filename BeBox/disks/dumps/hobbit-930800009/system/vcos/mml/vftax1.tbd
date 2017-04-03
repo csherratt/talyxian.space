@@ -1,0 +1,19 @@
+/* vftax1.tbd
+*/
+FrameRate:	100
+SampleRate:	8000
+FrameSize:	2*SampleRate/FrameRate
+FifoSize:	2*FrameSize
+
+Local: fifo_in	FifoSize
+Local: aiao_out	FrameSize
+Local: p_vftax	0x0	/* volume, status */
+			/* volume: ieee float */
+			/* status: 0 if fin is empty, else fin size */
+
+vftax1( BLevel)
+	{
+	fin 	fifo_in
+	aout 	aiao_out
+	pbuf	0x0
+	}

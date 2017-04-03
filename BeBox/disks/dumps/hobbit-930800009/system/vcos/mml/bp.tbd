@@ -1,0 +1,30 @@
+/*****************************************************************************/
+/*    bp.tbd
+/*****************************************************************************/
+Word:           4
+
+GeneralRegs:    22                  /* determine outbuf size                 */
+Accumulators:   4
+PC:             1
+Flags:          5
+Total:          GeneralRegs+Accumulators+PC+Flags
+
+inputsize:      2*Word              /* So, the buffer sizes are:             */
+outputsize:     Total * Word
+Local:          input  0
+Local:          output  0
+Local:          table   0
+Local:          control 0
+/*---------------------------------------------------------------------------*/
+
+
+
+
+bp(BLevel)                          /* This module runs in BLEVEL!!!         */
+{
+  input   input
+  output  output
+  table   table
+  cntl    control
+}
+/*===========================================================================*/

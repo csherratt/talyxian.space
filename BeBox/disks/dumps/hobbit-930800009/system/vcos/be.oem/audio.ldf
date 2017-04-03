@@ -1,0 +1,37 @@
+/* ++++++++++
+	audio.ldf
+	Copyright (C) 1991-2 Be Inc.  All Rights Reserved.
+	Loader file for the Be Audio Card dsp driver.
++++++ */
+
+Sections
+{
+	main		sPROG
+	c_cmd		sPROG
+	c_mspkr		sPROG
+	c_pspkr		sPROG
+	c_mmic		sPROG
+	c_pmic		sPROG
+	c_wdma		sPROG
+	c_init		sPROG
+	static		sPROG
+	iparam		sPARAM
+	dma		sAIAO	32  32
+	lspkr		sAIAO   4   4
+	rspkr		sAIAO   4   4
+	lmic		sAIAO   4   4
+	rmic		sAIAO   4   4
+}
+
+CacheMem
+{
+	0x0: c_init c_cmd
+	0x0: c_wdma
+	0x0: lspkr rspkr
+	0x0: lmic rmic
+	0x790: c_pspkr
+	0x790: c_pmic
+	0x910: c_mspkr
+	0x910: c_mmic
+}
+

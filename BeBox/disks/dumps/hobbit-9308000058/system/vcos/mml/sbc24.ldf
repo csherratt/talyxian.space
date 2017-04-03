@@ -1,0 +1,16 @@
+/*    sbc24 loader file
+*/
+
+Sections
+	{
+	main   sPROG
+	cmain   sPROG
+	state   sPROG
+	ain 	sAIAO  16	16
+	aout	sAIAO  4	4
+	}
+
+CacheMem
+	{
+	cmain state ain aout
+	}

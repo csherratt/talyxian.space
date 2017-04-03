@@ -1,0 +1,18 @@
+Sections
+{
+	main3   sPROG
+	cmain3  sPROG
+	dbinit  sPROG
+	piparm sPARAM
+	poparm sPARAM
+	eglobs sPROG
+	mcudat sPROG
+	dififo sFIFO	772 	4
+	dofifo sFIFO	30724	4
+	drdata sPARAM
+}
+
+CacheMem
+{
+    cmain3 eglobs dbinit mcudat
+}

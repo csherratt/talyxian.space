@@ -1,0 +1,15 @@
+
+Sections
+	{
+	main    sPROG
+	pbuf    sPARAM
+	}
+
+CacheMem
+	{
+	}
+
+Profile
+{
+	default: 9803921 0 0 2800 0 0 0 0
+}

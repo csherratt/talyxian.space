@@ -1,0 +1,13 @@
+/* ata loader file  
+*/
+
+Sections
+{
+main	sPROG
+ain 	sAIAO   4       4
+aout	sAIAO   4       4
+}
+
+CacheMem
+{
+}

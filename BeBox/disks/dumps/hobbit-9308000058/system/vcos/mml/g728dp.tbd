@@ -1,0 +1,15 @@
+/*****************************************************************************/
+/*    G728DP.TBD
+/*****************************************************************************/
+FrameSize:  160                        /* Each input is 2 bytes              */
+ChanSize:   FrameSize/8                /* One sample = 2 coded bits          */
+
+Local:      out FrameSize
+Local:      in ChanSize                /* LDCELP codewords to decoder        */
+Local:      dec_p 0x0
+
+g728dp( BLevel )
+{   pin     dec_p
+    ain     in
+    aout    out
+}

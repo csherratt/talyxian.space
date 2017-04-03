@@ -1,0 +1,16 @@
+/* atf.tbd
+*/
+
+FrameRate:	100
+SampleRate:	8000
+FrameSize:	2*SampleRate/FrameRate
+FifoSize:	2*FrameSize
+
+Local: atfin FrameSize
+Local: atfout FifoSize
+
+atf( BLevel)
+	{
+	ain 	atfin
+	fout 	atfout
+	}

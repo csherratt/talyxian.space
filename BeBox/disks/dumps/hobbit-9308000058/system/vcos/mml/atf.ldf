@@ -1,0 +1,14 @@
+/* atf loader file 
+*/
+
+Sections
+{
+main    sPROG
+cmain	sPROG
+ain 	sAIAO   4       4
+fout	sFIFO   4       4
+}
+CacheMem
+{
+cmain ain fout
+}

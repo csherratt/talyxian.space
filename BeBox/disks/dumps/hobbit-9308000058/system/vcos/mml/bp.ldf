@@ -1,0 +1,13 @@
+/*****************************************************************************/
+/*    bp.ldf
+/*****************************************************************************/
+Sections
+{
+    txt      sPROG            /* this has the code                           */
+    aut      sPROG            /* this is auto variable section               */
+    table    sPARAM           /* bp table                                    */
+    input    sPARAM           /* input buffer,used for handshake with loader */
+    output   sPARAM           /* output buffer,used for register dump etc.,  */
+    cntl     sPARAM           /* control parameters                          */
+}
+/*===========================================================================*/

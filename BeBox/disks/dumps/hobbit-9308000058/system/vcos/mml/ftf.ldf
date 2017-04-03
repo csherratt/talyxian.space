@@ -1,0 +1,13 @@
+/* ftf.ldf
+*/
+Sections
+	{
+	main sPROG
+	fin sFIFO 8 4
+	fout sFIFO 8 4
+	temp sAIAO 4 4
+	}
+
+CacheMem
+	{
+	}

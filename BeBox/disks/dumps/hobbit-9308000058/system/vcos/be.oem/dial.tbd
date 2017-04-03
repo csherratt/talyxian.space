@@ -1,0 +1,15 @@
+/* dial.tbd task build file
+*/
+FrameRate:      100             /* No of frames per second */
+FrameSamples: 	8000/FrameRate  /* No of 16-bit samples per frame */
+AiaoSize:	2*FrameSamples	/* No of bytes per frame */
+FifoSize:	16        	/* this many digits */
+
+Local: dial_fifo FifoSize	/* fifo buffer for input from host */
+Extern: TelOut_8_1 /* connect to phone device driver */
+
+dtmfg( BLevel)         		/* fifo of digits => buffers of samples */
+	{
+	fin 	dial_fifo
+	aout	TelOut_8_1
+	}

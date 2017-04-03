@@ -1,0 +1,20 @@
+/* delay.tbd
+*/
+
+FrameRate:      100		/* number of frames per second */
+FrameSamples:   8000/FrameRate	/* No of samples per frame */
+FrameSize:      2*FrameSamples	/* Bytesize of one channel's frame */
+DelaySize:      100*FrameSize    
+
+Extern: rm rs
+/*
+Local: rm FrameSize
+Local: rs FrameSize
+*/
+
+delay( BLevel)
+{
+ain	rm
+aout	rs
+fio	DelaySize
+}

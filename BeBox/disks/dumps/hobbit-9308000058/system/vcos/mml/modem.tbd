@@ -1,0 +1,40 @@
+/*name and version number:@(#)v3210_tbd.h	2.7*/
+/*date of get: 		  8/16/93 18:13:06*/
+/*date of delta:	  7/22/93 14:35:54*/
+
+
+
+SampleSize:	80
+
+
+adaBufferSize:  2*1*4*SampleSize        /* 2 bytes/sample,1 ch, 4 buffers */
+Size32b:        4*4*4*SampleSize          /* 4 bytes/sample */
+Consize:        2*SampleSize            /*constellation data size*/
+
+Extern: TelIn_8_1
+Extern: TelOut_8_1
+Extern: TelCon_8_1
+
+Local: daa_local adaBufferSize
+Local: control  Consize
+Local: xcons    Consize
+Local: ycons    Consize
+Local:  mdmregs 0
+Local: tx_fifo  Size32b
+Local: rx_fifo  Size32b
+
+
+modem( BLevel )
+{
+    input       TelIn_8_1
+    output      TelOut_8_1
+    xout        xcons
+    yout        ycons
+    daacon      control
+    daaP        TelCon_8_1
+    HostCS      mdmregs
+    InData      tx_fifo               /*- Xmt fifo -*/
+    OData       rx_fifo               /*- Rcv fifo -*/
+}
+
+

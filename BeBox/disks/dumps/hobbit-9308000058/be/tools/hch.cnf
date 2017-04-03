@@ -1,0 +1,1485 @@
+#########################################################################
+# High C / Professional Pascal / FORTRAN configuration file.
+# Copyright (C) 1989-1994 MetaWare Incorporated.  All rights reserved.
+#########################################################################
+# You may modify this file upon compiler installation.
+# Things you must do:
+#    Change HCDIR to the directory in which you installed High C compiler,
+#	or define HCDIR in the environment.
+#    Change PPDIR to the directory in which you installed Pascal compiler,
+#	or define PPDIR in the environment.
+#    Change MFDIR to the directory in which you installed MetaWare FORTRAN,
+#      or define MFDIR in the environment
+#########################################################################
+#  Here, define them if you wish; take out the leading # that comments
+#  out the line:
+# For CSPI, Mercury, and other i860 host link targets, you should
+# place your assembler and linker in TOOLSDIR, and set TOOLSDIR here
+# to show where they are.
+#
+#HCDIR=/where/you/loadedHC
+#PPDIR=/where/you/loadedPP
+#MFDIR=/where/you/loadedMF
+#TOOLSDIR=/where/your/tools/are
+#########################################################################
+#  Enable C++ library and header file inclusion, if this line is uncommented.
+#########################################################################
+#CPLUS=true
+DEFAULT_CPP_LEVEL=2
+#########################################################################
+#  Enable -Hloc C++ compilation.
+#  Enable -Hloclib C++ Compilation -- stream library won't work here.
+#  CAUTION: These features will not be supported in the future.
+#########################################################################
+#GLOC_CPP=true
+#LOCLIB_CPP=true
+# Allow user to specify C++ in environment
+# CPLUS supersedes CPP_OK. The latter is an anachronism.
+?%eCPLUS ?!$CPLUS CPLUS=%e$CPLUS
+?%eCPP_OK ?!$CPLUS CPLUS=%e$CPP_OK
+#########################################################################
+#  Append default specifications to ARGS
+#########################################################################
+#  Supply any default parameters that are prepended to the actual command
+#  line here.
+#
+#  You could supply -c for those compilers that can't link on the host.
+#  You could supply -S for those compilers that can't assemble on the host.
+#########################################################################
+ARGS=
+#########################################################################
+#  Things you might do:
+#    Change TOOLSDIR to the directory where the assembler, linker, and UNIX
+#	cpp reside.
+#    Change the AS, LINKER, or CPP definition below to specify individually
+#	where the assembler, linker, or UNIX cpp reside.
+#    Change the LINKER definition below to indicate different libraries or
+#	other parameters for the link.
+#    Change the HCINC or PPINC variables to indicate different directories
+#	containing include files.
+#    For DOS/OS2/VMS, add a definition for TMPPREFIX which the driver will
+#	prepend before any argument temp file constructed when the command
+#	line exceeds 128 characters.  Or, supply such definition in
+#	the environment.
+#  Changes beyond this scope require reading the "configuration language"
+#  section of the Installation Guide.
+#########################################################################
+
+#########################################################################
+#  Determine default directories to be referenced to access various
+#  components required by compilation.
+#########################################################################
+#  If XXDIR exists in the environment, choose environment version instead.
+#########################################################################
+?%eHCDIR ?!$HCDIR HCDIR=%e$HCDIR
+?%ePPDIR ?!$PPDIR PPDIR=%e$PPDIR
+?%eMFDIR ?!$MFDIR MFDIR=%e$MFDIR
+#LFDIR=/where/you/loadedLF
+?%eLFDIR ?!$LFDIR LFDIR=%e$LFDIR
+?%eTOOLSDIR ?!$TOOLSDIR TOOLSDIR=%e$TOOLSDIR
+?%eOS2LIB ?!$OS2LIB OS2LIB=%e$OS2LIB
+?!$TMPPREFIX ?%eTMPPREFIX TMPPREFIX=%e$TMPPREFIX %; \
+	# This will access a value in the environment if present.
+
+?!$HCDIR HCDIR=/you/must/specify/HCDIR
+?!$PPDIR PPDIR=/you/must/specify/PPDIR
+ASSUME_LF=1	 %; # Assume LF if neither MFDIR/LFDIR set.
+#ASSUME_MF=1 %; # Assume MF if neither MFDIR/LFDIR set.
+?!$LFDIR ?$ASSUME_LF LFDIR=/you/must/specify/LFDIR
+?!$MFDIR ?$ASSUME_MF MFDIR=/you/must/specify/MFDIR
+# Now we assume one of MFDIR/LFDIR are set.
+
+DEFS= %; MDEFS= %; # MDEFS = mandatory; Hansi will not remove them.
+
+#########################################################################
+#  This is the subdirectory under $HCDIR where the driver will look for
+#  executables.  If you want them somewhere else, change this variable.
+#########################################################################
+bin=bin
+
+#########################################################################
+#  Define the target machine
+#########################################################################
+#  Compiler definition target and technology.
+#  Only one line should be appropriate.
+# Note to developers: ** DON'T make up your own host/target names.
+# See MetaWare engineering mgmt. The naming convention is: OS name
+# first, followed by hardware. Example: a=AIX, 386=Intel 80386,
+# so the target or host name is a386.
+#########################################################################
+# Stratus b is for bigendian.  Default:  use unix library.
+#  Be sure to set LFLAG for target 29k as MRI or IPT to specify the assembler
+#	and the linker to be used.
+#	Also make sure that NATIVERUN is set to either "ebmon" or "runpceb".
+# MODELS = Does it support -Mx switch?
+OS=BEOS %; CPU=HOBBIT %; MACH=bhobbit %; TARG=bhob %; ASM_CPP=1 %; 	CPLUS=1 %; \
+	CCDIR=$HCDIR/headers/incc %; bin=tools %; \
+		HCINC=-I$HCDIR/headers/inc -I$HCDIR/headers -I$HCDIR/headers/os -I$HCDIR/headers/support -I$HCDIR/headers/app -I$HCDIR/headers/interface %; ARGS+= -mask6
+
+__CNF_VERSION=5
+
+#########################################################################
+#  HOST definition.  Uncomment one and only one.
+# Note to developers: ** DON'T make up your own host/target names.
+# See MetaWare engineering mgmt. The naming convention is: OS name
+# first, followed by hardware. Example: a=AIX, 386=Intel 80386,
+# so the target or host name is a386.
+#########################################################################
+
+?!$HOST #exit HOST not specified in driver config file!
+?!$TARG #exit TARG not specified in driver config file!
+
+# OS2_NEW is defined for the current OS/2 implementation (32-bit GOC).
+# Define OS2_OLD for earlier OS/2 implementations (16-bit and 32-bit LOC).
+
+# TARGET_IS_MSDOS is true for OS2, CDOS, and MSDOS -- things are similar.
+?|^     ?=# $HOST # dx86 # ^ ?=# $HOST # d386 # ^ 	\
+	?=# $HOST # o286 # ^ ?=# $HOST # o386 # ^ 	\
+	?=# $HOST # f286 # ^|   HOST_IS_MSDOS=1
+
+slash=/ %; ?$HOST_IS_MSDOS slash=\ %;
+bin=$slash$bin	 %; # Prepend appropriate dir seperator to "bin" designator
+
+?=^ $DRVPATH ^^ DRVPATH=./ %; # In case pgm name has no directory, supply .
+?=^ $DRVPARENT ^^ DRVPARENT=. %; \
+	# In case pgm name has no directory, supply .
+
+#########################################################################
+#  Front-end stuff to which processor-specific code may append options.
+#########################################################################
+festuff= %; # Stuff that pertains to all front-ends
+festuff_LOC= %; # Stuff that pertains to HC1.x and PP2.x  front-ends
+festuff_GOC= %; # Stuff that pertains to HC2/3.x and PP3.x  front-ends
+MFstuff= %; # Stuff that pertains to MF x.x front-end
+PPstuff= %; # Stuff that pertains to PP front ends only
+HCstuff= %; # Stuff that pertains to HC front ends only
+bestuff= %; # Stuff that pertains to HC2/3.x and PP 3.x back-ends
+CPPOPTS= %; # Options to be passed to outboard C preprocessor
+CPPDEFS= %; # -Dxxx=1 to be passed to outboard C preprocessor
+FE_CPPOPTS= %; # CPP options for front-end.
+
+asflags=
+ldflags=
+
+#########################################################################
+#  Define procedures for predefining preprocessor symbols
+#########################################################################
+#proc predef name fval
+    # These names are legal even in ANSI mode:
+    val = $fval %; ?=^$?fval^^ val=1
+    fe_opt = -def "$name $val"
+    festuff += $fe_opt
+    ?$USE_HC_AS_CPP FE_CPPOPTS += $fe_opt
+    CPPOPTS += -D$name$)=$val
+#endp
+#proc predef_non_ansi name fval
+    # These names are not legal if in ANSI mode:
+    val = $fval %; ?=^$?fval^^ val=1
+    ?!-Hansi DEFS += -def "$name $val" %; CPPDEFS += -D$name$)=$val
+#endp
+#proc no_ansi_defs
+    DEFS = %; CPPDEFS =
+#endp
+
+##########################################################################
+#  Figure out what kind of driver I am.
+##########################################################################
+# What kind of driver am I? C? Pascal? FORTRAN?  Depends upon my base name.
+dn = $~tolower~DRVNAME
+# If any of these strings are in the executable's name, it tells us what
+# kind of driver we are.
+#if ?!=^ $~str:hc~dn ^ ^
+    CDRV=1
+#elif ?!=^ $~str:cc~dn ^ ^
+    CDRV=1
+#elif ?!=^ $~str:pp~dn ^ ^
+    PDRV=1
+#elif ?!=^ $~str:lf~dn ^ ^
+    FDRV=1
+#elif ?!=^ $~str:ff~dn ^ ^
+    FDRV=1
+#elif ?!=^ $~str:mf~dn ^ ^
+    FDRV=1
+#elif ?!=^ $~str:xref~dn ^ ^
+    XDRV=1	 %; # I can be xref at the same time.
+#endif
+?!|^ ?$CDRV ^ ?$PDRV ^ ?$FDRV ^| 	#print I do not know what kind of \
+	driver I am:  C, Pascal, or FORTRAN. %; \
+		#exit The name of the driver must be such that I can figure this out.
+?$CDRV ?$PDRV #exit I can't be both a C and Pascal driver.
+?$CDRV ?$FDRV #exit I can't be both a C and FORTRAN driver.
+?$PDRV ?$FDRV #exit I can't be both a Pascal and FORTRAN driver.
+
+
+
+
+
+#########################################################################
+# There must be no more settings of ARGS after this:
+ARGV=$ARGS	 %; # Specify arguments to driver.
+
+#########################################################################
+#  Define source file suffixes recognized by the driver.
+#########################################################################
+# Place CPP as the first element of these lists to say for which languages
+# an outboard CPP is supported.  Do not confuse CPP as "C++".
+PEXT=.p .pas		 %; # Pascal
+FEXT=CPP .f .for .qc .ftn %; # FORTRAN
+AEXT=.s .asm		 %; # Assembly
+CEXT=.c .i 		 %; # C
+CPPEXT=.cc .cpp .ii 	 %; # C++
+
+# NT and OS2 can have significant case in filenames, but we allow either case
+
+CPPEXT+=.C %; # Unix convention: .C.
+
+
+# ASM_CPP means we allow assembly files to be preprocessed if the user
+# specifies -Hasmcpp.
+-Hasmcpp ?-Hasmcpp ?$ASM_CPP AEXT=CPP $AEXT %; \
+	        ?!-Hcpp USE_HC_AS_CPP=1 %; # Use HC to preprocess asm files.
+# C and C++ also can use outboard C++ unless it's the HC compiler.
+?!$USE_HC_AS_CPP CEXT=CPP $CEXT %; CPPEXT=CPP $CPPEXT
+
+# Allow user-specification of C++ extensions on command line.
+-Hcppext=? %; # E.g., -Hcppext=c,cpp,foo
+#if ?$-Hcppext=?
+    CPPEXT=CPP
+    #foreach^ $~sep,~?-Hcppext=? ^ arg CPPEXT+= .$arg
+    # Now Rewrite CEXT, excluding those things in CPPEXT.
+    NEWCEXT=CPP
+    #proc addit x
+        #foreach^ $CPPEXT ^ argcpp ?=^ $arg ^ $argcpp ^ #return
+        NEWCEXT += $x
+    #endp
+    #foreach^ $CEXT ^ arg #call addit $arg
+    CEXT=$NEWCEXT
+#endif
+
+#########################################################################
+#  Procedure for handling mutually exclusive arguments
+#########################################################################
+
+#proc lastopt optlist
+    # Find the last opt specified in the optlist.
+    optmax=- %; # Default: junk.
+    #foreach^ $*optlist ^X ?$*X ?>^ $?#*X ^ $?#*optmax ^ optmax=$X
+#endp
+#proc mutex optlist default
+    #call lastopt $optlist
+    # If there exists a maximum option among them, kill the others off:
+    #if ?!=^ $optmax ^ - ^
+        #foreach^ $*optlist ^X ?!=^ $X ^ $optmax ^ #killopt $X
+    #else
+        # None of the options were set at all, so set the default one.
+        ?!=^ $default ^^ #setopt $default
+    #endif	
+#endp
+
+
+
+#########################################################################
+#  Other default arguments.
+#########################################################################
+
+?!$LOC #call predef _GOC
+?$LOC #call predef _LOC
+# CPU/OS defines.
+#  If 386, wait to define CPU later. It may actually be a 286
+#call predef _$CPU
+#call predef _$OS
+# For most CPUs, add lower-case version of CPU:
+
+?!$NO_TOLOWER_CPU #call predef_non_ansi $~tolower~CPU
+
+#foreach^ $?PREDEFS ^X #call predef_non_ansi $X 1
+
+# Define "ATT_UNIX" variable if AT&T System V.3 or V.4 or Solaris
+
+# -v means something different for AT&T V.4 and possibly for V.3.
+
+# -v means something else for BTtymnet too.
+
+-v ?-v __VERBOSE=1
+
+
+
+#########################################################################
+#  Error message header format.  Match UNIX or Microsoft C.
+#########################################################################
+# Format string:  %f = file  %l = line  %c = column  %q = "  %m = ,  %t = tab
+-Hunixerr -Hmscerr -Hturboerr -Hefmat=? -Hwfmat=?
+?-Hunixerr EF=-efmat "%q%f%q%m line %l: " -wfmat "%q%f%q%m line %l: warning: "
+?-Hmscerr EF=-efmat "%f(%l) : error %n: " -wfmat "%f(%l) : warning %n: "
+?-Hturboerr EF=-efmat "Error %f %l: " -wfmat "Warning %f %l: "
+?$EF festuff+=$EF
+?$EF bestuff+=$EF
+# Perhaps he specified his own arbitrary format.  Send to front and back end.
+?$-Hefmat=? festuff += -efmat $-Hefmat=? %; bestuff += -efmat $-Hefmat=?
+?$-Hwfmat=? festuff += -wfmat $-Hwfmat=? %; bestuff += -wfmat $-Hwfmat=?
+
+#########################################################################
+#  Determine where errors are sent (efile).
+#    For DOS and VMS, they are sent to standard output
+#    Otherwise, they are sent to standard error
+#  Determine suffix for executable of compiler:
+#    For DOS and VMS, it is ".exe"
+#    Others do not have a suffix.
+#########################################################################
+
+# TAH=target at host; TAT=target at target (for native compilers).
+#if ?|^ ?$HOST_IS_MSDOS ^ ?=# $HOST # n386 # ^ ?=# $HOST # mvax # ^|
+    # Errors to stdout; files end in .exe.
+    efile=@ %; ?=^ $HOST ^ n386 ^ efile=@E %; # errors to stderr ok on NT
+    exe=.exe %; ?=^ $HOST ^ f286 ^ exe=.286
+    -HV?
+    ?-HV? com=$-HV? %; exever=$com
+    TAH = $TARG %; AH = $TARG %; TAT = $TARG %; AT = $TARG
+    ?=# $HOST # mvax # TAH= %; AH= %; TAT= %; AT =
+    #	?!=# $HOST # mvax # TAH= %; AH= %; TAT= %; AT =
+#else	
+    com=com %; efile=@E %; exe=
+    TAH=$TARG@$HOST %; AH=@$HOST %; TAT=$TARG@$TARG %; AT = @$TARG
+#endif
+# TAH=Composite name of a com file: target@host.
+EXESUFFIX=$exe %; # Inform driver.
+
+# Determine suffix for object file: .obj for DOS and VMS; .o otherwise
+OBJSUFFIX=.o
+# MSDOS/VMS targets use .obj files.
+# If exactly one source file being processed and -c/-S specified, allow -o
+# to specify the output.  SINGLEOBJFILE is ignored unless source count = 1.
+?|^ ?-c ^ ?-S ^| ?-o? SINGLEOBJFILE=$-o?
+
+#proc Ensure_directory thing
+    # Make sure *thing, if defined, ends in  \ or /.
+    ?$*thing ?!=^ $~tail:1~*thing ^ / ^ ?!=^ $~tail:1~*thing ^ \ ^  	\
+	    *thing = $*thing$)
+#endp
+# If object prefix specified, make sure it's a directory.
+-Hobjprefix=? ?$-Hobjprefix=? OBJPREFIX = $-Hobjprefix=?
+# OBJPREFIX is documented as for both directory and filename prefixes, so
+# if the users want it to be just for directory prefix, they should
+# uncomment the following themselves.
+# ?$HOST_IS_MSDOS #call Ensure_directory OBJPREFIX
+
+# For xreffing GOC output, there is no .xrf suffix on xrf files.
+XIEXT=$?:^ ?!$LOC ^ -iext " " ^^
+# LOC compilers expect a .(c/p) as suffix for input.  Tell them not to.
+IEXT=$?:^ ?$LOC ^ -iext " " ^^
+# LOC compilers don't expect arguments in batch files to be quoted:
+?$LOC __NOQ=x %; # Tell driver.
+
+#proc old_driver
+    #exit Need driver V$1.$2$?3 or later.  You have version $__major.$__minor.
+#endp
+
+# If TOOLSEARCH is set we will search paths for assembler and linker (UNIX \
+	only)
+# if the file doesn't exist as specified.
+# We will also check any paths in any -Qpath directive (from AT&T V.4).
+#proc pathsearch var path shortname
+    # If we shouldn't be searching, or the full name exists,
+    # just use the full name.
+    fullname=$path$slash$shortname
+    # Don't return the name with ".exe" appended if required to find it.
+    # In this way -native works properly for the tools on a .exe-host \
+	    machine.
+    fullname2=$fullname
+    ?!=^ $?exe ^ ^ fullname2=$fullname$exe
+    # -Qpath works for linker/assembler tools (but not for crt*.o).
+    -Qpath.
+    #if ?-Qpath
+        QPATH=$-Qpath?
+    #elif ?-Yl
+        QPATH=$-Yl?
+    #else
+        QPATH=
+    #endif
+    ?!=^ $?QPATH ^ ^ #foreach^ $~all>~QPATH ^X     	nn=$X$slash$shortname$exe %; \
+	    ?%i$nn *var = $nn $*var %; #return
+    ?|^ ?!$TOOLSEARCH ^ ?%i$fullname2 ^| *var = $fullname $*var %; #return
+    ?<^ $__minor ^ 6 ^ 	#print $fullname not found and path search \
+	    unavailable: %; 	#call old_driver 1 0 6
+    # Otherwise set to short name and prefix with search character :.
+    *var=:$shortname $*var
+#endp
+#proc findlinker
+    -Hlinker=? ?-Hlinker=? ?!$ldpathname ldpathname=$-Hlinker=?
+    ?$ldpathname ?%i$ldpathname LINKER=$ldpathname $LINKER %; #return
+    #call pathsearch LINKER $?TOOLSDIR$bin $?toolprefix$ldname$?toolsuffix
+#endp
+#proc findassembler
+    -Has=? ?-Has=? ?!$aspathname aspathname=$-Has=?
+    ?$aspathname ?%i$aspathname AS=$aspathname $AS %; #return
+    #call pathsearch AS $?TOOLSDIR$bin $?toolprefix$)as$?toolsuffix
+#endp
+
+#########################################################################
+# DOS help facility.
+#########################################################################
+#if ?$HOST_IS_MSDOS
+
+    # Use our supplied fgrep program to produce on-line help.
+    -h?	# Help toggle.
+    # If help wanted, just find it and quit processing.
+    ?-h? #exec $DRVPARENT/bin/fgrep -q( $-h? $DRVPARENT/bin/hc386.hlp %; \
+	    		#exit1 %; # Quit; no compilations.
+#endif
+
+#########################################################################
+#  Customized location of compiler executables and library
+#########################################################################
+#  If you want to change where HC1COM/HC2COM lives, set these lines.
+#  HC1COM=yourhc1com
+#  HC2COM=yourhc2com
+#  INLCOM=your inliner
+#  If you want to change where libraries live, set these lines:
+#  CLIB=yourCLIB
+#  PLIB=yourPLIB
+#  MWLIB=yourMWLIB
+#  If you want to change where include directory lives, set these lines.
+#  PPINC=-Iwhatever -Iandthensome
+#  HCINC=-Iwhatever -Iandthensome
+#  Change location of usr/include by changing USRINC.
+#########################################################################
+?!$USRINC USRINC=/usr/include
+
+# -D	 %; # Uncomment this line for truly copious debugging information.
+
+#######################################################################
+# May be invoking driver on output of preprocessed text (e.g., cfront, yacc)
+# If so, alter the name of the source file for sake of debugger and annotator
+#########################################################################
+-Hsrc=?
+?-Hsrc=? __SOURCE=$?-Hsrc=?
+
+
+
+############################################################################
+#  If Pascal range-checking is to be ON, by default, comment out the \
+	following
+############################################################################
+PPstuff+=-off CHECK_RANGE CHECK_SUBSCRIPT
+
+############################################################################
+#  CPP/NOCPP options.
+############################################################################
+-Hcpp -Hnocpp	?>^$?#-Hnocpp^$?#-Hcpp^ #killopt -Hcpp
+
+############################################################################
+#  Suppress object module?
+############################################################################
+-Hnoobj? -noobj?
+?|^?-Hnoobj^?-noobj^| __NOOBJECT=1 %; festuff_LOC += -noobj
+
+############################################################################
+#  Define profiling flags: -pg -p
+############################################################################
+-p -pg	?|^?-p^?-pg^| festuff_LOC += -p %; ?!$HOST_IS_MSDOS bestuff += -p
+?$HOST_IS_MSDOS ?-p festuff_GOC += -p
+
+############################################################################
+#  Define floating point flags: -f -fsingle -fsingle
+############################################################################
+-f -fsingle -fdouble -fsingle2
+?>^$?#-fsingle^$?#-fdouble^ festuff += -off DOUBLE_MATH_ONLY %; fsingle=1
+?>^$?#-f^$?#-fdouble^ festuff += -off DOUBLE_MATH_ONLY %; fsingle=1
+?-fdouble ?>^$?#-fdouble^$?#-fsingle^ festuff += -on DOUBLE_MATH_ONLY
+?-fsingle2 HCstuff += -off WIDEN_FLOAT_ARGS
+
+############################################################################
+#  PCC option.  If given, look like pcc as much as possible.
+############################################################################
+-Hpcc
+# ?!-Hpcc ?!$HC1x HCstuff+= -def "__STDC__ 1"
+#if ?-Hpcc
+    ?$LOC festuff_LOC+=-on long_enums -on pcc
+    ?!$LOC HCstuff+= -on long_enums -on pcc -pcc
+#endif
+
+
+############################################################################
+#  ANSI processing:  define parse/scan tables and switches.
+############################################################################
+#proc do_ansi
+    ?-Hkanji #exit Can't specify both -Hansi and -Hkanji
+    ?!$HCANSI_PT HCANSI_PT=$HCDIR$bin/hcansi.pt
+    ?!$HCANSI_ST HCANSI_ST=$HCDIR$bin/hcansi.st
+    ?!$HCANSI_SPT HCANSI_SPT=$HCDIR$bin/hcansip.pt
+    ?!$PPANSI_PT PPANSI_PT=$PPDIR$bin/ppansi.pt
+    ?!$PPANSI_ST PPANSI_ST=$PPDIR$bin/ppansi.st
+    CANSI=-pt $HCANSI_PT -spt $HCANSI_SPT -st $HCANSI_ST -ansi -on trigraphs
+    PANSI=-pt $PPANSI_PT -st $PPANSI_ST -ansi
+    #call no_ansi_defs %; # This may break lots of code, but ansi means ansi.
+    HCstuff += -off make_externs_global %; # Don't bubble out local externs
+    HCstuff += -pragma "onwarn_error(578,299,579,580)"
+    bestuff += -off optimize_cmp_zero
+    #call predef __HIGHC_ANSI__	 %; # Flag that we are HC, even if ANSI.
+#endp
+-Hansi ?-Hansi #call do_ansi
+
+############################################################################
+#  VS Pascal compatibility
+############################################################################
+-Hvs -vs
+#if ?|^ ?-Hvs ^ ?-vs ^|
+    ?!$VS_PT  VS_PT =$PPDIR/bin/vs.pt
+    ?!$VS_ST  VS_ST =$PPDIR/bin/vs.st
+    ?!$VS_SPT VS_SPT=$PPDIR/bin/vspre.pt
+    VS=-pt $VS_PT -st $VS_ST -spt $VS_SPT -vs
+    PPstuff+=$VS
+    ?-Hansi #print Cannot specify both -Hansi and -Hvs.
+#endif
+
+############################################################################
+#  Microsoft Pascal compatibility
+############################################################################
+#if ?$PDRV      # Avoid introducing non-H option -ms unless Pascal driver.
+    -Hms -ms
+    #if ?|^ ?-Hms ^ ?-ms ^|
+        PPstuff += -mset -on pad_aggregates pad_byte_arrays align_variants align_2
+        bestuff += -mset
+    #endif
+#endif
+
+#########################################################################
+#  Define __HIGHC__ if -Hansi and -Hpcc not specified
+#########################################################################
+?!-Hansi ?!-Hpcc CPPHC=-D__HIGHC__=1
+# There are various reasons we can't have C++; consider them all here only:
+-Hloc ?-Hloc ?!$GLOC_CPP FORCE_NOCPP=1
+-Hloclib ?-Hloclib ?!$LOCLIB_CPP FORCE_NOCPP=1
+
+# DO_CPP means do c++: CPLUS is 1 and FORCE_NOCPP hasn't been set.
+# Don't change FORCE_NOCPP after this point; it won't have effect.
+-Hcpp_ok ?-Hcpp_ok CPLUS=1
+-Hcplus ?-Hcpp_ok CPLUS=1
+OPTLIST=-Hcplus -Hnocplus
+#if ?$CPLUS
+    cplusdef = -Hcplus
+#else
+    cplusdef = -Hnocplus
+#endif
+#call mutex OPTLIST $cplusdef
+
+?$CDRV ?-Hcplus ?!$FORCE_NOCPP DO_CPP=1
+
+?-Hloc ?$DO_CPP festuff_GOC+=-def "__GLOC__ 1"
+
+# Always wrap UNIX header files:
+?$DO_CPP HCstuff += -c_wrap ^/usr/include
+#proc c_wrap
+    # Wrap C files for C++.
+    ?$DO_CPP HCstuff+=-c_wrap ^$USRINC
+#endp
+
+
+#########################################################################
+#  Handle -Hunixlib and -Hmwlib
+#      IF user specified -Hunixlib then
+#         1) Reference UNIX header files only,
+#         2) Don't link in MetaWare ANSI library
+#########################################################################
+-Hunixlib -Hmwlib
+# There are synonyms that made sense in the past when UNIX had no ansi lib:
+-ansilib -noansilib -Hansilib -Hnoansilib
+?-Hnoansilib    #setopt -Hunixlib
+?-noansilib	#setopt -Hunixlib
+?-Hansilib      #setopt -Hmwlib
+?-ansilib	#setopt -Hmwlib
+
+OPTLIST=-Hunixlib -Hmwlib
+# Option is mwlib by default unless UNIXLIB has been set.
+#call mutex OPTLIST $?:^ ?$UNIXLIB ^ -Hunixlib ^ -Hmwlib ^
+
+#if ?-Hunixlib
+    # Ignore -Hunixlib if we're cross-compiling. We include the wrong
+    #   header files  otherwise.
+    #if ?=^$HOST^$TARG^
+        #if ?!$HCINC
+	    HCINC=-I$USRINC %; # Reference UNIX header files only
+	    #call c_wrap
+        #endif
+        noansilib=1
+        ?!$CLIB CLIB= %; # Suppress MetaWare ANSI library
+    #endif
+#endif
+
+#########################################################################
+#  Include files.
+#########################################################################
+?$HCDIR ?!$HCINC HCINC=-I$HCDIR$slash$)inc
+#if ?-Hloclib
+    HCINC=-I$HCDIR$slash$)v1x$slash$)inc
+    ?$DO_CPP festuff_GOC+=-c_wrap ^v1x$slash$)inc
+#endif
+-Hwin ?-Hwin HCINC+=-I$HCDIR$slash$)win$slash$)inc
+
+#if ?$DO_CPP
+    # allow user to specify CCDIR
+    ?!$CCDIR CCDIR=$HCDIR$slash$)incc
+    CCINC=-I$CCDIR
+    HCINC+=$CCINC
+#endif
+
+?$PPDIR ?!$PPINC PPINC=-I$PPDIR$slash$)inc
+?!$HOST_IS_MSDOS ?!=^$OS^MSNT^ HCINC+= -I$USRINC
+?$OS2_NEW HCINC+= -I$HCDIR$slash$)inc$slash$)os2
+
+# SOM support -- make everything SOM.
+-Hsom  -Hsomwrap=?
+#if ?-Hsom ?$DO_CPP
+    #call c_wrap
+    # Wrap our own HC include files until we insert som_bindings \
+	    specifications.
+    ?$HCINC ?!-Hunixlib festuff_GOC += -c_wrap $HCDIR$slash$)inc
+    ?$DO_CPP festuff_GOC += -c_wrap $CCDIR soml.h somr.h
+    festuff_GOC += -on som_bindings
+    ?-Hsomwrap=? festuff_GOC += -c_wrap $-Hsomwrap=? soml.h somr.h
+    #call predef __SOM__
+#endif
+
+#########################################################################
+#  Debugger switches set by -g
+#########################################################################
+#if ?-g
+
+    #if ?$LOC
+        festuff_LOC+= -off optimize_xjmp optimize_fp auto_reg_alloc postpone_arg_pops
+    #else
+        festuff_GOC+= -g -on suppress_function_inlining
+        bestuff += -off cross_jump postpone_arg_pops optimize_across_statements
+    #endif
+
+#endif
+
+#########################################################################
+#  Miscellaneous options.
+#  Those ending in ? can have a value; the rest cannot.
+#########################################################################
+-HX? -O? -w? -g? -Hasm -Hanno -Hlist -Hlist=? -Hsuffix=? -Hkanji -H+w -Hmbcs
+?-Hlist list=-on list
+?-Hlist=? list=-on list -list $-Hlist=? %; bestuff += -out $-Hlist=?
+#if ?-w
+    #if ?$LOC
+        festuff_LOC+=-off warn
+    #else
+        #if ?!$-w?
+	    warn_level=0
+        #else
+	    #foreach^ 0 1 2 3 4 ^N ?=^$N^$-w?^ warn_level=$-w?
+	    ?!$warn_level #print Invalid warning level specification: $-w
+        #endif
+        #if ?$warn_level
+	    HCstuff += -pragma "warning_level $warn_level"
+	    #if ?=^$warn_level^0^
+	        nowarn=-off warn
+	        ?$PDRV bestuff += $nowarn
+	    #endif
+	    ?$FDRV MFstuff+= -w $warn_level
+	    ?!<^$warn_level^4^ HCstuff += -on VP_UP_WARN
+	    ?<^$warn_level^2^ HCstuff += -off PROTOTYPE_CONVERSION_WARN
+        #endif
+    #endif
+#endif
+
+#################################################################
+# Process optimization level (-O switch)
+#################################################################
+#    Define meaning of optimization levels
+#       -O<level>     Optimize for speed at level <level>
+#    If no level is specified, 2 is assumed.
+#    If -O not specified, level is 6, but when BEHAVED turned off.
+#    If -Os, this means optimize-for-space.
+#    If you wish, you can name your own optimization levels (see below).
+##############################################################
+#if ?-O		# if -O specified
+    #if ?$-O?
+        O_level=$-O?
+    #else
+        O_level= %; #     Default, if level number not specified (-O).
+    #endif
+#else
+    O_level = 1
+#endif
+
+#############################################################
+# Set procedure opt_<level> to the appropriate options code
+# for optimization level <level>.
+# If no -O is specified, the default level is 1.
+# If -O is specified without a level number, the default is 2
+#
+# To turn on optimization toggle:  -on toggle_name...
+# To turn on loop-unrolling:   -L factor,size
+#
+# To turn on inlining: set HIT and/or HIC to appropriate values
+#############################################################
+#proc opt_s
+    bestuff += -on cross_jump optimize_for_space preload_args_from_memory 		local_cse_iterate live_dead_iterate 		mem_refs_from_loop loop_reg_rename 		reg_alloc_enhance reduce_reg_contention
+#endp
+
+#proc opt_0
+    bestuff += -on SOURCE_CODE_ORDER
+#endp
+
+#proc opt_1
+    #call opt_0
+    bestuff += PRELOAD_ARGS_FROM_MEMORY
+    ?!-g bestuff += CROSS_JUMP
+#endp
+
+#proc opt_2
+    # Notice that opt_2 is _not_ opt_1 with more things.
+    bestuff += -on BACK_SUBSTITUTE_EPILOG HIGH_LEVEL_SCHEDULING 	    GLOBAL_CSE LOCAL_CSE_ITERATE LIVE_DEAD_ITERATE CROSS_JUMP 	    MEM_REFS_FROM_LOOP LOOP_REG_RENAME 	    REG_ALLOC_ENHANCE REDUCE_REG_CONTENTION
+    # -g turned off optimize_across_statements. Turn it On again.
+    ?-g bestuff += -on optimize_across_statements
+#endp
+
+#proc opt_3
+    #call opt_2
+    bestuff += -on LOW_LEVEL_SCHEDULING CLEANUP_SPILLS
+    ?$NCR HIT=20 %; HIC=4
+
+#endp
+
+#proc opt_4
+    #call opt_3
+
+    # Turn on BEHAVED unless -O without a level was specified.
+    #if ?!=^ $O_level ^ ^
+        bestuff += -on BEHAVED
+        HCstuff += -on behaved %; # Keep in sync with above.
+    #endif
+
+    HIT=40 %; HIC=4
+#endp
+
+#proc opt_5
+    #call opt_4
+    bestuff += -on STRENGTH_REDUCE INDUCTION_ANALYSIS
+    bestuff += -on SSA LANDING_PADS
+#endp
+
+# Add loop unrolling and (for 860) software pipelining.
+#proc opt_6
+    #call opt_5
+
+    bestuff += -L 5,3 -L 4,4 -L 3,8 -L 2,15
+
+#endp
+
+# Here is the case of -O with no specific level.
+# We make it act like -O6 (CLCC still -O2) but without BEHAVED toggle
+#proc opt_	
+    #if ?$CLCC
+        #call opt_2
+        O_level = 2 %; # So that -l option is correct.
+    #else
+        #call opt_6
+        O_level = 6 %; # So that -l option is correct.
+    #endif
+#endp
+
+
+#proc opt_7
+    #call opt_6
+
+
+
+#endp
+
+#############################################################
+#  If you want to have your own optimization designation,
+#  set the value here.  E.g.,
+#  		opt_fred = -on this -off that
+#  Then you can say -Ofred.
+#############################################################
+
+# Now access the appropriate opt_xxx procedure:
+whichopt=opt_$O_level
+#if ?$*whichopt
+    #call $whichopt
+#else
+    #print Unknown optimization designation: $-O.  Opt level 0 assumed.
+    #call opt_0
+#endif
+bestuff += -l$O_level %; # Pass opt-level to back-end
+
+#####################################################
+# End of processing optimization levels
+#####################################################
+
+# Loop unrolling parameters appear after opt levels
+# so user's spec takes precedence.
+?!$LOC -Hunroll=? ?-Hunroll=? #foreach^ $~all>~-Hunroll=? ^ X bestuff += -L \
+	$X
+
+#################################################################
+# Handle other switches
+#################################################################
+
+?-Hasm festuff_LOC += -on asm %; bestuff+=-a -on asm
+?-Hanno bestuff+= -a
+-Htmpprefix=? ?-Htmpprefix=? TMPPREFIX=$-Htmpprefix=?
+#
+# Under SUN and Solaris, -temp=xxx is the way to specify directories
+#
+
+# Be sure the TMPPREFIX ends in a directory separator.
+?$TMPPREFIX ?!=^ $~tail:1~TMPPREFIX ^ / ^ ?!=^ $~tail:1~TMPPREFIX ^ \ ^ \
+	TMPPREFIX=$TMPPREFIX$slash
+?-g festuff_LOC+= -debug %; festuff_GOC += -g
+?-Hsuffix=? OBJSUFFIX=$-Hsuffix=?
+?-Hkanji kanji=-st $HCDIR$bin/ck.st -kanji %; 	bestuff += -dbcs %; \
+	# Define Kanji scan tables.
+# Define Multibyte scan tables and pass -dbcs switch to front and back end..
+#if ?-Hmbcs
+    festuff_GOC += -def _MBCS
+    #if ?=^$OS$CPU^AIXIBM370^
+        festuff_GOC += -mbcs %; bestuff += -mbcs
+    #elif ?=^$OS^SUN^
+        festuff_GOC += -kanji %; bestuff += -kanji
+    #elif ?=^$OS$CPU^AIXI386^
+        festuff_GOC += -mbcs -st $HCDIR$bin/cmbcs.st %; 	    bestuff += -mbcs
+    #else
+        festuff_GOC += -dbcs -st $HCDIR$bin/cmbcs.st %; 	    bestuff += -dbcs
+    #endif
+#endif
+?-Hsuffix=? OBJSUFFIX=$-Hsuffix=?
+?-E E=-ppo @
+?-P P=-ppo %s.i %; # Put preprocessing output in the .i file.
+?-H+w HCstuff+= -off pcc_msgs
+?!$LOC bestuff+=-e %; \
+	# Force optimizer to send warnings and errors to stdout.
+?-Hmset bestuff+= -XM %; # Use Microsoft sets
+
+#########################################################################
+#  Deal with targets that support multiple memory models
+#########################################################################
+#if ?$MODELS	 %; # Does this support memory models?
+    -M? # Declare option -M with argument.	Now check the arguments:
+    #if ?-M
+        #foreach(^ l s m c b ^ large small medium compact big ^) v1 v2 	?=^ $-M? ^ $v1 ^ model=$v2 %; \
+	        mletter=$v1
+    #endif
+    #if ?!$model
+        # if model wasn't defined, but -M was, complain.
+        ?-M #exit Invalid memory model specification: $?-M
+        model = small %; mletter = s %; # default if no other specified.
+    #else
+        # Don't force the model unless specified; this allows a
+        # profile to specify it.
+        festuff += -mm $model
+    #endif
+    ?-Hloclib model1x=v1x$slash$)$model
+#endif
+
+#########################################################################
+#  Define libraries to be referenced in the generic case
+#########################################################################
+lib=lib
+?$model lib=$lib/$model
+
+?$PDRV langname=PP %; ?!$LIBDIR LIBDIR=$PPDIR$slash$lib
+?$CDRV langname=HC %; ?!$LIBDIR LIBDIR=$HCDIR$slash$lib
+#if ?$FDRV
+    #if ?$MFDIR
+        langname=MF %; ?!$LIBDIR LIBDIR=$MFDIR$slash$lib
+    #elif ?$LFDIR
+        langname=LF %; ?!$LIBDIR LIBDIR=$LFDIR$slash$lib
+        FSTART=$LIBDIR/fcrt0.o %; \
+	        # Additional start-up routine for Lahey fortran.
+    #endif
+#endif
+CRT=crt
+START=$LIBDIR/$CRT$)0.o	 %; # Start, if using MW libraries.
+ENTRY=_start
+
+# For UNIX V.4/SOL, /lib is now in the C compilation system (ccs) directory.
+
+?!$SYSLIB SYSLIB=/lib
+?!$CRTLIB CRTLIB=$SYSLIB
+
+
+# Set PLIB_USER_DEFINED if PLIB was set, etc.
+#foreach^ PLIB CLIB CCLIB FLIB MWLIB ^ N  X=$N$)_USER_DEFINED %; ?$*N *X=1
+
+?!$PLIB  PLIB=$LIBDIR/libpp.a
+FLIBNAME=$?:# ?$MFDIR # libf.a # lf$TARG.a #
+?!$FLIB  FLIB=$LIBDIR/$FLIBNAME
+?!$CLIB  CLIB=$LIBDIR/libc.a
+?$DO_CPP ?!$CCLIB CCLIB=$LIBDIR/libcc.a
+?!$MWLIB MWLIB=$LIBDIR/libmw.a
+
+?$LOC CLIB=	 %; # If LOC compilers, no MW-supplied libc.a.
+lc = -lc	 %; # Default.
+ldname=ld	 %; # Default.
+
+#proc checkpath
+    # See if $2 exists on path $*1.  We pass indirect in case $*1 is blank.
+    # If so call $3 with the full name.
+    # Be sure not to check for the existence of files like "C:\/link.exe".
+    # DOS gets a file open error (although C:/bin\/link.exe is OK),
+    # and the 3COM network gives a "Abort, Retry, Fail" (!!!) message.
+    # So this procedure overcomes the DOS and 3COM bugs:
+    path=$*1
+    # The slash variable was getting clobbered, so I had to copy into a
+    # local variable and use the local.  This way, it doesn't matter if
+    # it gets clobbered.  JT 1/30/90
+    localslash=$slash
+    # #print looking for $path$localslash$2
+    ?$HOST_IS_MSDOS ?|# ?=^ $~tail:1~path ^ / ^ # ?=^ $~tail:1~path ^ \ ^ # \
+	    | localslash=
+    ?%i$path$localslash$2 #call $3 $path$localslash$2
+#endp
+
+#########################################################################
+#  Library search mechanism.
+#########################################################################
+# Library search should be used when under non-UNIX systems or when
+# the libraries are independent of the host UNIX.
+# -Lxxx specifies a directory xxx to search in finding a library.
+# -lxxx specifies a library to search for.
+# If targetted to DOS, libraries are assumed to end in .lib.
+# Otherwise, they start with lib (unless -lxxx contains "lib") and
+# end in $LIBEXT
+
+#NOTE: AM29K usurps "-lregs=xxx". Therefore we must declare it before -l?
+#  We must also intercept -lm so as to insert 29000 version of 29050 version
+
+
+
+#if ?$LIBSEARCH
+    -L? -l?	# Library search path -L and library specification -l.
+    LIBEXT=a %; # Unix lib extension; may be altered in machine-specific
+    #  sections below prior to calling libsearch
+    #proc libsearch model_directory %; # Parameter relevant only to DOS.
+        # ?<^ $__minor ^ 5 ^ #call old_driver 1 0 5
+        EXTRALIBS=
+        set="EXTRALIBS+=%$1 %; FOUND=1"
+        #proc find_lib libname libsuffix
+	    FOUND=0
+	    ln=$libname
+
+	    # If under UNIX, search in -L places, then search in $LIBDIR.
+	    # If "lib" appears in the name, don't prefix with lib.  So allow xlib, 860lib, etc.
+	    ?=^ $~basename~~str:lib~ln ^ ^ ln=lib$ln
+	    ?=^ $~basename~~str:.$LIBEXT~ln ^^ ln=$ln$?libsuffix$).$LIBEXT %; \
+		    			# Always suffix with appropriate extension.
+	    # Search as normal name first.
+	    ?%i$ln #call set $ln %; #return
+	    set_break = "EXTRALIBS+=%$1 %; FOUND=1 %; #break"
+	    #foreach^ $~all>~?-L? ^ libpath #call checkpath libpath $ln set_break
+	    ?<^ $FOUND ^ 1 ^ #call checkpath LIBDIR $ln set
+
+	    ?<^ $FOUND ^ 1 ^ #print Warning: Library $ln not found, hence is \
+		    omitted from link.
+        #endp
+
+        #  Handle the AM29K -cl option
+        #
+
+
+        #foreach^ $~all>~?-l? ^ libwanted #call find_lib $libwanted $?libappendix
+    #endp
+#endif
+
+#########################################################################
+#  OS MS-DOS Dependencies
+#########################################################################
+#if ?$LIBSEARCH ?!=^$CPU^AM29K^
+    #call libsearch %; # Library search for non-MSDOS, if desired.
+#endif
+#proc MS_format_link
+    # Microsoft format linker command line.
+    #if ?$OS2_OLD
+        LINKER+= @ %+%c %foreach %o %f + %n %end , %n $linkout %n , %n $DOSLIB /seg:500 $?ldflags
+    #elif ?$OS2_NEW
+        LINKER+= @ %+%c $ldflags $INITOBJS %foreach %o %f + %n %end , %n
+    #elif ?=^ $OS ^ CDOS ^
+        LINKER+= %c.inp %foreach %o %f %n %end %n  $DOSLIB [data[or[1]]] $?ldflags %z [inp
+    #else
+        LINKER+= @ %+%c %foreach %o %f + %n %end , %n %O %n , %n $DOSLIB /seg:500 $?ldflags
+    #endif
+#endp
+#proc MS_format_asm
+    AS+= %s , %o $?asflags ;
+#endp
+
+#if ?|^ ?$x_stuff_needed ^ ?$ATT_UNIX ^|
+    #proc x_stuff
+        -X? # Ensure declared.
+        ?!$NCR xflag = -Xm		 %; # Default: use -Xm except for NCR
+        #if ?-X
+	    #if ?-Hansi
+	        #print Warning: -Hansi overrides -X setting.
+	    #elif ?=^$-X?^t^
+	        xflag=-Xt
+	    #elif ?=^$-X?^a^
+	        xflag=-Xa
+	    #elif ?=^$-X?^c^
+	        xflag=-Xc
+	    #elif ?=^$-X?^m^
+	        #  MetaWare Default option
+	        xflag=-Xm
+	    #else
+	        #print Warning: Unrecognized option: $-X
+	    #endif
+        #endif
+
+        #  When AT&T gets long-double support, remove the
+        #  -nolongdouble or -doubleonly flags
+        #
+        #if ?=^$xflag^-Xt^
+	    HCstuff+= -on PCC USE_UP_RULES VP_UP_WARN -asm_reserve -unpragma 		    -def "_ALLOCA _ALLOCA"
+	    bestuff += -on GLOBALS_VOLATILE
+	    ?!$fsingle HCstuff += -on double_math_only
+	    #call predef __STDC__ 0
+	    ?$NCR HCstuff += -nolongdouble
+
+	    # Huh? Whats this for?
+	    #  ?-Hcpp CPPOPTS += -Xt
+
+        #elif ?=^$xflag^-Xa^
+	    HCstuff+= -on PCC VP_UP_WARN TRIGRAPHS -asm_reserve -unpragma 		    -def "_ALLOCA _ALLOCA"
+	    #call predef __STDC__ 0
+	    ?!$fsingle HCstuff += -on double_math_only
+	    ?$NCR HCstuff += -nolongdouble
+	    ?-Hcpp CPPOPTS += -Xa
+        #elif ?=^$xflag^-Xc^
+	    HCstuff += -on TRIGRAPHS -unpragma
+	    ?$NCR HCstuff += -doubleonly %; bestuff += -XD
+	    # Enforce strict ANSI conformance in regard to floating point
+	    bestuff += -Xf
+	    #call no_ansi_defs %; # No non-ANSI predefined names permitted.
+	    ?-Hcpp CPPOPTS += -Xc
+        #else
+	    ?!-Hansi HCstuff += -asm_reserve
+	    xflag=-Xc %; # Link with -Xc libraries
+        #endif
+    #endp
+
+#endif
+
+
+
+?$CLCC HCstuff += -on LONG_ENUMS -off CHAR_DEFAULT_UNSIGNED %; #call x_stuff
+
+# Allow -sched (old) and -Hsched (for V.4).  This requires newer driver.
+# If you have an older driver, use commented-out line.
+-Hsched	-sched test_sched=?|^ ?-Hsched ^ ?-sched ^|
+$test_sched bestuff+=-on low_level_scheduling high_level_scheduling
+# ?-sched bestuff+=-on low_level_scheduling high_level_scheduling
+
+
+#####################################################################
+#  HOBBIT Dependencies --
+#####################################################################
+# pic switch
+-PIC -pic
+-Hgo 	 # Use Go's version of crt0.o
+-Hch	 # Use CrickHollow's version of crt0.o
+-Hbe	 # Use BeLabs version of crt0.o
+-HR		 # Link against reentrant libraries
+-kernel
+-Hscratch=?
+# Which silicon mask?
+-mask4 -mask3 -mask5 -mask6
+OPTLIST=-mask4 -mask3 -mask5 -mask6
+#call mutex OPTLIST -mask5
+?|^?-mask3^?-mask4^| ldflags = $?ldflags -Benter -Bcatch %; \
+			bestuff+=-on mask4
+?-mask5 ldflags = $?ldflags -Bcatch
+
+# Ok to use dqn instructions?
+-nodqm
+?-nodqm bestuff+=-on nodqm
+
+# Always pass back_substitute_epilog
+bestuff+=-on back_substitute_epilog
+
+?-Hscratch bestuff += -N0 $-Hscratch=?
+
+asflags=
+?|^?-PIC^?-pic^| bestuff+=-XP %; asflags = -k %; HCstuff += -PIC %; PIC=1
+# Little- and big-endian switch
+__OPT_WARN=1 %; # Warn of unknown options.
+#ldopt -a -b -f -m -r -s -t -G -V -x -d. -d? -e. -e? -h. -h? -l. -l? 	\
+	-u. -u? -z. -z? -B. -B? -L. -L? -M. -M? -Q. -Q? -Y. -Y? -k. -k? 	\
+	-J. -J? -F. -F?
+-HL -HB
+OPTLIST=-HL -HB
+#call mutex OPTLIST -HB
+
+festuff_GOC+=-vartab 14 -on modtype
+
+# If little-endian, use machine name "lhobbit" and
+#   predefine _HOBBIT_L
+?-HL MACH=lhobbit	 %; asflags+=-LE %; #call predef _HOBBIT_L 1 %; \
+				#call predef _LE 1
+?!-HL #call predef _BE 1
+?-HR #call predef _REENTRANT 1
+T=$TARG
+?-Hbe T=bhob
+AS=$TOOLSDIR$bin/ash $asflags -o %o %s
+LIBDIR=$TOOLSDIR/lib
+#if ?!-G
+    lc = -lc
+    LIBC=libc %; CRT=crt0 %; CRTN=crtn
+    ?-HR LIBC=-lr %; CRT=crtr
+    ?$PIC LIBC=$LIBC$)pic %; lc = $lc$)pic
+    ?-p LIBC=$LIBC$)_p %; CRT=m$CRT %; lc = $lc$)_p
+    ?-pg LIBC=$LIBC$)_p %; CRT=g$CRT %; lc = $lc$)_p
+    ?-HL LIBC=l$LIBC$) %; CRT=l$CRT %; CRTN=l$CRTN %; lc = $lc$)l
+    START=$LIBDIR/$CRT.o
+    END=$LIBDIR/$CRTN.o
+    #if ?=^ $T ^ bhob ^
+        LIBS= -L $LIBDIR -los -lapp -lsupport -linterface
+        ?-kernel START= %; LIBS= -L $LIBDIR
+        ?$DO_CPP LIBS += -lcc
+        LIBS += $lc
+        ?|^?-PIC^?-pic^| bestuff+=-on got
+    #else
+        ?-Hgo START=$LIBDIR/$CRT.o.go
+        ?-Hch START=$LIBDIR/$CRT.o.ch
+        LIBS=
+        ?$DO_CPP LIBS += $CCLIB
+        LIBS += $LIBDIR/$LIBC$).a
+        ?-kernel START=
+    #endif
+#else
+    LIBS= %; START=
+#endif
+
+?-o? EXE=-o $-o?
+ENTRY=
+ldname=ldh
+
+
+
+#########################################################################
+#  Finish library definitions after processor-specific modifications.
+#########################################################################
+# These are the libraries.  If you prefer others, or have moved
+# the libraries, rewrite these lines:
+# If -noansilib specified, make sure -lc is searched first. There may still
+# be High-C - specific functions referenced, therefore search CLIB and MWLIB
+# afterwards.
+#if ?!$LIBS
+    ?!$DO_CPP CCLIB= %; # Kill C++ library if not in C++ mode.
+    #if ?$noansilib
+        ?$PDRV LIBS=$PLIB $lc $CLIB $MWLIB
+        ?$CDRV LIBS=$?CCLIB $lc $CLIB $MWLIB
+        ?$FDRV LIBS=$FLIB $lc $CLIB $MWLIB
+    #else
+        ?$PDRV LIBS=$PLIB $CLIB $MWLIB $lc
+        ?$CDRV LIBS=$?CCLIB $CLIB $MWLIB $lc
+        ?$FDRV LIBS=$FLIB $CLIB $MWLIB $lc
+    #endif
+#endif
+
+
+#########################################################################
+#  Make
+#########################################################################
+#if ?>^ $__minor ^ 9 ^
+    # Driver >= 10 means that we do -Hmake here.
+    -Hmake -Hmake=? -Hrel # Tell driver to run just front-end via __MAKE_FLAG:
+    makestuff=
+    ?-Hmake makestuff += -make %; __MAKE_FLAG=1
+    ?-Hmake=? makestuff += -make $-Hmake=? %; __MAKE_FLAG=1
+    ?-Hrel makestuff += -rel
+    festuff += $makestuff
+#endif
+
+# Sun Make compatibility:
+
+# Sun Make compatibility:
+# The Sun make program sets the environment variable SUNPRO_DEPENDENCIES
+# to a filename followed by the target names for targets which need
+# dependency rules built by the compiler.  The Sun compiler does this on
+# the fly while compiling the module.  Here we catch the environment
+# variable and set the necessary switches to make the same thing happen.
+# We produce dependency entries for each source file being compiled,
+# regardless of whether it was requested in the environment variable.
+# Hopefully this won't cause any problems.
+
+#if ?!$LOC
+    #if ?%eSUNPRO_DEPENDENCIES
+        # Declare -Hmake so the driver will let me run the back end.
+        -Hmake -Hrel -Hmakeof -Hforcecom
+        # The output filename is the first item in the environment variable.
+        #proc DOMAKEOPT val
+	    #if ?!$MAKEOUTF
+	        MAKEOUTF=$val
+	    #else
+	        MAKEOPT=$?MAKEOPT $val
+	    #endif
+        #endp
+        #foreach^ %e$SUNPRO_DEPENDENCIES ^ val #call DOMAKEOPT $val
+        MAKEOFCMD=-makeof $MAKEOUTF -on no_source_in_make_state
+        ?$MAKEOPT festuff_GOC += -object "$MAKEOPT"
+        # If no output file was found, let the dependency entry go to stdout.
+        ?=^ $MAKEOUTF ^ ^ MAKEOFCMD=
+        festuff_GOC+=-make $MAKEOFCMD -forcecom
+    #endif
+#endif
+
+#########################################################################
+#  Define compiler commands.
+#########################################################################
+# Define compiler temporary files.
+# hc2 and pascal can share the same temp file.
+varfile=%t0 %; ILfile=%t1 %; hc2tmp=%t2 %; ptmp=%t2 %; deffile=%t3
+hc2tmp2=%t3 %; # hc2tmp2 and deffile can share
+
+# Common XX1COM/XXCOM stuff.
+festuff_GOC += -mach $MACH -vfile $varfile -ofile $ILfile $?list 		-dfile $deffile $?kanji $?E
+more_stuff= $festuff $?list $?nowarn $?asm -fn -silent -efile $efile 		$?kanji $?E $?DEFS $?MDEFS $?P
+# Put GOC- and LOC-specific stuff at end of general FE list
+# so things can be overriden if necessary
+festuff_GOC = $more_stuff $festuff_GOC
+festuff_LOC = $more_stuff $IEXT $festuff_LOC
+LF_stuff = -il $ILfile -vf $varfile
+
+#########################################################################
+# Inliner for globally optimizing compiler.
+#########################################################################
+#if ?-native	# Compiler running native on CPU?
+    1com=$AT %; # GOC front-end, target-hosted.
+    2com=$TAT %; # GOC back-end, target-hosted.
+#else
+    1com=$AH %; # GOC front-end
+    2com=$TAH %; # GOC back-end
+#endif	
+0com=$1com$?com
+?$HOST_IS_MSDOS ?!$XDRV real1com=$?com
+?!$HOST_IS_MSDOS real1com=$?com
+1com=$1com$)1$?real1com
+2com=$2com$)2$?com
+loccom=$TAH$?com %; # Locally-optimizing compilers front & back end.
+
+#proc check_com cname default_dir default_name
+    # If command-line override present for compiler name, use it;
+    # otherwise, use present value or, if not set, use default.
+    cswitch = -H$~tolower~cname$)=?
+    #if ?$*cswitch
+        # Check for -Hxxxcom=.  First see if exists; if doesn't, try
+        # compiler bin directory.
+        *cname=$*cswitch
+        ?!%i$*cname *cname=$default_dir$bin/$*cname
+    #endif	
+    ?!$*cname *cname=$default_dir$bin/$default_name
+#endp
+
+#########################################################################
+# Inliner for globally optimizing compiler.
+#########################################################################
+#if ?!|^ ?$HC1x ^ ?$PP2x ^| # Don't define if we're using LOC compilers.
+    -Hit=? -Hic=? -Hib=? -His=?
+    -Hir -Hix -Hin -Hia -Hih -Hid -Hip -Hi -Hiw -Hiu -Him
+    # Do inliner if we've seen any of the flags.
+    #foreach^ r x n a h d p u m ^ N X=-Hi$N %; ?$*X IARGS=$?IARGS -$N %; \
+	    # If -Hir, add -r; etc.
+    #foreach^ t c b s ^ N X=-Hi$N$)= %; Y=$X$)? %; ?$*X IARGS=$?IARGS -$N $*Y %; \
+	    # If -Hit=5, add -t 5, etc.
+    ?-Hi IARGS = $?IARGS	 %; # Make sure defined.
+    ?-Hiw IARGS = $?IARGS	 %; # Make sure defined.
+    -Hinliner=?
+    -Hhcinliner=?
+    -Hppinliner=?
+    -Hmfinliner=?
+    #  HIC and HIT will be predefined if inliner is to be invoked due to
+    #  optimization level. In such a case, turn on the "safe_only" switch to
+    #  only inline those functions that the front-end has guaranteed are
+    #  called consistently.
+    #if ?!-Hit= ?!-Hic=	 %; # If neither, then:
+        ?$HIT ?!-g IARGS = $?IARGS -t $HIT
+        ?$HIC ?!-g IARGS = $?IARGS -c $HIC
+    #endif
+    #   Pascal can't handle INLINER
+    -Hnoinline	# Allow turning off inliner manually.
+    #if ?$IARGS ?!-Hnoinline
+        #if ?-g
+	    #print Inliner cannot be used with -g; inliner invocation suppressed.
+        #else
+	    IARGS = -s 256 $IARGS %; # Don't inline fcns with stksize > 256.
+	    varfile2=%t3 %; ILfile2=%t4
+	    ?$INLCOM INLINER=$INLCOM
+	    # The basic inliner with flags; this alone is used by older \
+		    drivers:
+	    #call check_com INLINER $HCDIR inl$0com
+	    # Newer drivers use these separately for the three languages:
+	    # Use new convention only if user isn't using old:
+	    ?!-Hinliner=? ?$HCDIR #call check_com HCINLINER $HCDIR inl$0com
+	    ?$MFDIR #call check_com MFINLINER $MFDIR inl$0com
+	    ?$PPDIR #call check_com PPINLINER $PPDIR inl$0com
+	    # If multiple-module inlining, tell driver about it with -I.
+	    #if ?-Hiw
+	        INLINER+= $?INLINER_SUFFIX -I <source> $ILfile $ILfile2 $varfile $varfile2 $IARGS
+	    #else
+	        INLINER+= $?INLINER_SUFFIX %c.-Vi $varfile -Vo $varfile2 -i $ILfile -o $ILfile2 $IARGS
+	    #endif
+	    # ?$TMPPREFIX INLINER+=-tmpprefix $TMPPREFIX
+	    ILfile=$ILfile2 %; varfile = $varfile2
+        #endif
+    #endif	
+#endif	
+
+# Here define the compiler front and back-ends.
+
+##### Front ends. #####
+?!$HC1x -Hhc1com=? #call check_com HC1COM $HCDIR hc$1com %; \
+		HC_FRONTEND=$HC1COM %; \
+		HC1COM+=$?1SUFFIX %s $?CANSI $festuff_GOC $HCstuff -os $OS
+?$BANNER HC1COM += -banner $BANNER
+?!$PP2x -Hpp1com=? #call check_com PP1COM $PPDIR pp$1com %; \
+		PP1COM+=$?1SUFFIX $?PANSI $festuff_GOC $PPstuff -tfile $ptmp -os $OS
+-HZ? LFARGS= %; #foreach^ $~all>~?-HZ? ^ X LFARGS += -$X
+?$LFDIR -Hftn1com=? #call check_com FTN1COM $LFDIR lf$1com %; \
+		FTN1COM+=$?1SUFFIX %s $LF_stuff -ftndir $DRVPATH 			-mach $MACH $LFARGS -bdatatf $hc2tmp -drvname $DRVNAME 			-exe $exe
+-Hmf1com=? ?$MFDIR #call check_com MF1COM $MFDIR mf$1com %; \
+		MF1COM+=$?1SUFFIX %s $festuff_GOC $MFstuff -os $OS
+
+#if ?!$LOC
+    HCPP1COM=$HC1COM -cpp $DEFAULT_CPP_LEVEL -on fe_inlining 	-pt $HCDIR$bin/opc.pt -spt $HCDIR$bin/opcpre.pt
+    # Outboard inliner doesn't support vartab 13 currently.
+    ?-g HCPP1COM += -vartab 13
+    # type checking for 370 is on for ESA, so use vartab 14.
+    -Hcpp=? -Hcpplvl=? # Detect specification of cpp level so we can override cpp 2 above.
+    # -Hcpp is obsolescent; replaced by -Hcpplvl.
+    # If we specify -Hcpplvl with a C program, we need fe_inlining to support
+    # C++ features.
+    ?-Hcpp=? HC1COM+= -cpp $-Hcpp=? -on fe_inlining
+    ?-Hcpp=? ?$HCPP1COM HCPP1COM+= -cpp $-Hcpp=?
+    ?-Hcpplvl=? HC1COM+= -cpp $-Hcpplvl=? -on fe_inlining
+    ?-Hcpplvl=? ?$HCPP1COM HCPP1COM+= -cpp $-Hcpplvl=?
+#endif
+
+##### Back ends. #####
+-Hhc2com=? #call check_com HC2COM $HCDIR hc$2com
+# %c. is so that batch files for DOS start with $ILfile.
+?-HX XFLAGS=-X$-HX?
+?!$LOC HC2COM+=$?2SUFFIX %c.-i $ILfile -V $varfile 		-T \
+	$hc2tmp -T $hc2tmp2 $?XFLAGS $?-g $bestuff		-os $OS -efile \
+	$efile
+?$LFDIR -Hftn2com=? #call check_com FTN2COM $LFDIR hc$2com %; \
+	# Just the names only, please.
+?$MFDIR -Hmf2com=? #call check_com MF2COM $MFDIR hc$2com %; \
+	# Just the names only, please.
+-Hpp2com=? #call check_com PP2COM $PPDIR hc$2com
+# Have the driver supply the temp file names to the LOC compilers.
+festuff_LOC+=-tmpi1 %t0 -tmpi2 %t1 -tmptp %t2
+?$PP2x -Hppcom=? #call check_com PPCOM $PPDIR pp$loccom %; \
+		PPCOM+=$?PANSI $festuff_LOC $PPstuff
+?$HC1x -Hhccom=? #call check_com HCCOM $HCDIR hc$loccom %; \
+		HCCOM+=$?CANSI $festuff_LOC $HCstuff
+
+#if ?$PFDIR	# Do for Promula FORTRAN:
+    PFTMP=$%t3
+    -Hpfarg=? pfflags= %; #foreach^ $~sep,~~all>~?-Hpfarg=? ^X pfflags += $X
+    -Hpf0com=? #call check_com PF0COM $PFDIR pfc %; \
+	    PF0COM+=%s O$PFTMP $pfflags
+    -Hpf2com=? #call check_com PF2COM $HCDIR hc$2com %; \
+	    # Just the names only, please.
+    ?!$HC1x -Hpf1com=? #call check_com PF1COM $HCDIR hc$1com %; \
+	    	PF1COM+=$?1SUFFIX $PFTMP $?CANSI $festuff_GOC $HCstuff -os $OS
+    ?$HC1x  -Hpfcom=? #call check_com PFCOM $HCDIR hc$loccom %; \
+	    	PFCOM+=$PFTMP -anno %s $?CANSI $festuff_LOC $HCstuff -iext " "
+    ?$HCINC HCINC+=-I$PFDIR/lib
+    ?$EXTRALIBS EXTRALIBS+=$PFDIR/lib/pfchc.lib
+#endif	
+
+# Define xref; use either PP or HC directory, depending upon driver type.
+#if ?$XDRV
+
+    Xname=xref$?exever
+
+    ?$CDRV XREF=$HCDIR$bin/$Xname %s $XIEXT
+    ?$PDRV XREF=$PPDIR/bin/$Xname $XIEXT
+    ?$PP2x PPCOM+=-noobj
+    ?$HC1x HCCOM+=-noobj
+#endif
+
+#########################################################################
+#  Define assembler command (if not already defined)
+#########################################################################
+?!$AS AS=-o %o $?asflags %s %; #call findassembler
+
+#########################################################################
+#  Define LINKER command (if not already defined)
+#########################################################################
+# %o = user objects; %u = user-specified link options (e.g. -lm).
+?-o? EXE=-o $-o?
+?!=^$ENTRY^^ ldflags = $?ldflags -e $ENTRY %; # Add entry specification
+?<^ $__minor ^ 8 ^ #call old_driver 1 0 8
+
+# Prelinking not required for DOS, Vr4, or Hobbit, or AMD, or sspc
+
+# Standard linker setup
+?!$LINKER 	LINKER=$?ldflags $?CLCC_LINKER_FLAGS $START $?FSTART 	    \
+	%L $?EXTRALIBS $LIBS $?END $?EXE %; #call findlinker
+
+
+
+############################################################################
+#  Define outboard C preprocessor command (if not already defined)
+#  Run cpp if -Hcpp specified, unless -Hnocpp specified.
+############################################################################
+?!$CPPEXE CPPEXE=$SYSLIB/cpp %; # Full path name of cpp.
+# >= version 1.7 of the driver we call CPP_PROC below; before, only HC could \
+	have CPP.
+?-Hcpp CPP=$CPPEXE %; ?<^ $__minor ^ 7 ^ CPP+=$?CPPHC
+?$USE_HC_AS_CPP ?!-Hcpp CPP=x %; \
+	# Tell front-end we have an outboard C preprocessor.
+
+-Hold_style_cpp
+#proc CPP_PROC Language infile outfile ifile_of_infile objfile
+    # $CPP now contains all the -Ds and the -I arguments.
+    ADD=
+    ?=^ $Language ^ HC ^ ADD=$HCINC $?CPPHC $?HCCINC
+    ?=^ $Language ^ PP ^ ADD=$PPINC
+    out=$outfile
+    # Olivetti claims that you must pass -P to CPP to tell it not to
+    # emit line control information.
+    ?-P out=$ifile_of_infile %; ADD+=-P
+    ?-E out=$?:^ ?$USE_HC_AS_CPP ^ @ ^ ^ %; # If -E, output to stdout only.
+    # System V CPP requires infile and outfile at end of list.
+    #if ?$USE_HC_AS_CPP
+        # Use HC frontend.
+        stuff=$HC_FRONTEND $infile -mach $MACH -no%$ -ppo $out -silent $FE_CPPOPTS 	    $?makestuff -dfile $%t3 %; \
+	        # $deffile -- can't use that here.
+        # -obj $objfile -- newer drivers support this
+        -I? ?-I? #foreach^ $~all>~-I? ^dir stuff+= -dir $dir
+        #proc add_def kind arg
+	    #if ?!=^ $~str:=~arg^ ^
+	        this=$~car~~sep=~arg
+	        that=$~cdr~~sep=~arg
+	        stuff += $kind "$this $that"
+	    #else
+	        stuff += $kind "$arg 1"
+	    #endif
+        #endp
+        -D? ?-D? #foreach^ $~all>~-D? ^def #call add_def -def $def
+        -U? ?-U? #foreach^ $~all>~-U? ^def #call add_def -undef $def
+        ?-Hold_style_cpp stuff += -on comments_paste
+        #exec $stuff
+    #else
+        #exec $CPP $?ADD $CPPOPTS $CPPDEFS $infile $out
+    #endif
+#endp
+
+# Tools running native on CPU?
+# Add any tools you also run native.
+# WARNING:  If one back end is specified as native, all backends must be.
+# Thus it is not possible to have HC2COM in the list but not FTN2COM.
+NATIVETOOLS=HC1COM HCPP1COM HC2COM INLINER HCINLINER FTN1COM FTN2COM XREF
+OLDAS=$AS	 %; # Some need old name of AS.
+?-native #foreach^ $NATIVETOOLS ^ N ?$*N *N=$NATIVERUN $*N
+
+# Allow use of Eclipse's OS386 to run the unbound executables for HC LOC/GOC.
+?$HOST_IS_MSDOS -os386 ?-os386 	#foreach^ HC1COM HC2COM HCCOM INLINER \
+	^N ?$*N *N=:up $*N
+
+# If we specified to print branch profile info, do so and quit.

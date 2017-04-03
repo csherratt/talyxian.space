@@ -1,0 +1,14 @@
+/* task build file */
+
+Extern: ijp1o
+Global: ijp2o 0x0
+Extern: joalas
+Global: doalas 0x2000
+
+ycc411( BLevel )
+{
+	piparm ijp1o
+	poparm ijp2o
+	dififo joalas
+	dofifo doalas
+}

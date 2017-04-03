@@ -1,0 +1,15 @@
+/*****************************************************************************/
+/*    DTMFG.TBD
+/*****************************************************************************/
+FRAMERATE:      100
+Size8kc:        2*8000/FRAMERATE     /* block of 16bit samples at 8kc */
+SizeDTMFr:      128*4                /* just pick a size for the max symbols buffered */
+
+Local:  input   8
+Local:  output  Size8kc
+
+
+dtmfg( BLevel )
+{   fin     input
+    aout    output
+}

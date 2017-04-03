@@ -1,0 +1,22 @@
+/*****************************************************************************/
+/*    DTMFG.LDF
+/*****************************************************************************/
+/* This module generates dtmf tones and runs on a 10mS frame.
+/*
+/* Size: offchip= 1160 bytes + sizeof( fin ).
+/*       onchip =  884 bytes.
+/*
+/* Time:   nI     nB     nR     nW    nRb    nWb    nBM    %STD_DSP
+/*       ------ ------ ------ ------ ------ ------ ------ ---------
+/*         784    8      318    48     0      0      0       1.48
+/*****************************************************************************/
+Sections
+{   main   sPROG
+    cmain  sPROG
+    state  sPROG
+    fin    sFIFO    8   4
+    aout   sAIAO  160   0
+}
+CacheMem
+{   cmain  state  aout
+}

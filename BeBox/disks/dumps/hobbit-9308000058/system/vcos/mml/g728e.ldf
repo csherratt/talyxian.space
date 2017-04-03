@@ -1,0 +1,15 @@
+/*    G728E.LDF
+*/
+
+Sections
+	{
+	main    sPROG
+	cmain   sPROG
+	ain     sAIAO 160 0
+	aout    sAIAO  20 0
+	}
+
+CacheMem
+	{
+	cmain
+	}

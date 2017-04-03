@@ -1,0 +1,11 @@
+/* src3t1.tbd
+*/
+
+InSize:  480			/* 24.0ksps, 240 samples, 16 bit, linear */
+OutSize: InSize/3
+
+src3t1( BLevel)
+	{
+	ain 	InSize
+	aout	OutSize
+	}

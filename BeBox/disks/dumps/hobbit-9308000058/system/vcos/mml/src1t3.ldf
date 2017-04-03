@@ -1,0 +1,17 @@
+/* src2t1.ldf 
+*/
+
+Sections
+	{
+	main	sPROG
+	cmain	sPROG
+	dbuf	sPROG
+	fbuf	sPROG
+	ain 	sAIAO	4	4
+	aout	sAIAO	8	8
+	}
+
+CacheMem
+	{
+	0x0: cmain dbuf fbuf ain aout
+	}

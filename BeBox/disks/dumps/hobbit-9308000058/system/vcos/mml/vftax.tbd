@@ -1,0 +1,17 @@
+/* vftax.tbd
+*/
+
+FrameSize:	160
+FifoSize:	2*FrameSize
+
+Local:	fInput	FifoSize
+Local:	aOutput	FrameSize
+Local:	pBuf	0x0
+
+vftax( BLevel)
+	{
+	fin	fInput
+	ain	FrameSize
+	aout	aOutput
+	pbuf	pBuf
+	}

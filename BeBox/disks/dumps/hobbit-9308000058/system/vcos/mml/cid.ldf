@@ -1,0 +1,50 @@
+/*****************************************************************************/
+/* Copyright(c) 1992 AT&T Bell Laboratories, Department 528550
+/* All Rights Reserved
+/*****************************************************************************/
+/* CID.S                                                    Jack Chang 8/1/1992
+/*  This module implements the CallerID.
+/*  (sampling rate converter, FSK demodulator, AGC, callerID signal analyzer.)
+/*  sampling rate= 8 KHz ; frame rate= 10 mS.
+/*
+/* ain   = input aiao  = 160 bytes = 80 pcm samples (2 bytes each).
+/*
+/* fout  = output fifo = 80 bytes (detected message data).
+/*
+/* iparam= parameter buffer with 1 long.  
+/*            Exit_cid:  long  0x0;         default= 0, Exit_cid= 1 means
+/*                                          messages have been captured.
+/*                                          And NO more process.  
+/* size:   onchip = 3760 bytes
+/*         offchip= 60 + 3760 + sizeof(ain) + sizeof(fout)
+/*                = 3820 + sizeof(ain) + sizeof(fout)
+/*
+/* time:                 nI          nE      nB           nON       nOFF
+/*                    effective   offchip    bus        onchip     offchip
+/*                    instr_cnt   accesses   arbs      instr_cnt  instr_cnt
+/*                    ---------   --------   ----      ---------  ---------
+/*                      17096       1390      18         17762       15
+/*
+/*            nI*72ns+nE*250ns+nB*1us= 1.597ms= 15.96%DSP3210
+/*****************************************************************************/
+
+
+
+/*****************************************************************************/
+/*    cid loader file
+/*****************************************************************************/
+Sections
+{
+main    sPROG
+cmain   sPROG
+state   sPROG
+iparam  sPARAM
+ain     sAIAO  160      160
+fout    sFIFO  160       4
+}
+
+CacheMem
+{
+cmain state 
+}
+/*============================================================================*/

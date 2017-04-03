@@ -1,0 +1,16 @@
+/* fta.tbd
+*/
+
+FrameRate:	100
+SampleRate:	8000
+FrameSize:	2*SampleRate/FrameRate 
+FifoSize:	100*FrameSize
+
+Local: ftain FifoSize
+Local: ftaout FrameSize
+
+fta( BLevel)
+	{
+	fin 	ftain
+	aout 	ftaout
+	}

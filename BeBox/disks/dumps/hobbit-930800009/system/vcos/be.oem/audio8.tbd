@@ -1,0 +1,71 @@
+/* ++++++++++
+	audio8.tbd
+	Copyright (C) 1993-4 Be Inc.  All Rights Reserved.
+	Task build file for the Be Audio Card driver.
+
+	Modification History (most recent first):
+	26 oct 93	ehk	modified for 8kHz mono sound.
+	29 sep 93	rwh	removed sharing of cdma and spkr.
+	26 may 93	rwh	adapted for using doblock into buffers
+	16 dec 92	rwh	new today
++++++ */
+
+FrameRate:	100
+SampleRate:	8000			/* your sample rate here! */
+FrameSamples:	SampleRate/FrameRate
+SampleSize:	2			/* your sample size in bytes here! */
+FrameSize:	SampleSize*FrameSamples
+
+/* ---
+   Each sample (left & right for stereo, just the sample for mono),
+   regardless of size (16 bit vc 8 bit) needs 8 bytes in dma-able form.
+   We need two sets of both input & output dma buffers, for a total of four.
+--- */
+
+dmaFrameSize:	FrameSamples * 8
+dmaBufferSize:	4*dmaFrameSize
+
+/* ---
+	the param buffer has the following fields
+
+command:	long	0		// driver command
+status:		long	0		// driver status
+control:	long	0		// driver control
+frame_control:	long	0		// (in) data control info
+
+The command field is where driver command id's go.  On each pass the
+driver checks for a command id, runs the command if nay, and returns
+a result code (0=success, -1=failure) in this field.
+
+The status word is pretty useless. Ignore it.
+
+The control word is where a parameter goes for whatever command get issued
+to the driver.  See audio.h and the sample application for details.
+
+The data control info is exactly what the AD1849 codec expects.  See the
+1849 spec for details, or see audio_hw.h.
+
+The layout of the param section, and the 'API' for issuing commands will
+probably change to more closely match the way AT&T did it.  Stay tuned...
+----- */
+
+Global:	audio_param		0
+Global:	left_speaker		FrameSize
+Global:	right_speaker		FrameSize
+Global:	left_microphone		FrameSize
+Global:	right_microphone	FrameSize
+
+/* ---
+   here is the module declaration and ioname to module section name linkage.
+--- */
+
+audio (BLevel)
+{
+	iparam		audio_param
+	dma		dmaBufferSize
+	lspkr		left_speaker
+	rspkr		right_speaker
+	lmic		left_microphone
+	rmic		right_microphone
+}
+

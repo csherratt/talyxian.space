@@ -1,0 +1,28 @@
+/* xi44t8.src 
+*/
+Extern: AudIn_44100_440_16_1
+Global: AudIn_22050_220_16_1	440
+Global: AudIn_11025_110_16_1	220
+Global: AudIn_8000_80_16_1	160
+
+/* 44t22 */
+src2t1( ILevel)
+{
+ain	AudIn_44100_440_16_1	
+aout 	AudIn_22050_220_16_1	
+}
+
+/* 22t11 */
+src2t1( ILevel)
+{
+ain 	AudIn_22050_220_16_1	
+aout	AudIn_11025_110_16_1
+}
+
+/* 11t8 */
+src11t8( ILevel)
+{
+ain	AudIn_11025_110_16_1
+aout	AudIn_8000_80_16_1
+}
+

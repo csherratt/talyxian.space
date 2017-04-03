@@ -1,0 +1,30 @@
+/* ++++++++++
+	silence.tbd
+	Copyright (C) 1993 Be Inc.  All Rights Reserved.
+	Task build file for the phone silence detector.
+
+	Modification History (most recent first):
+	28 oct 93	rwh	new today
++++++ */
+
+framerate:	100
+samplerate:	8000
+framesize:	2*samplerate/framerate
+
+/* ---
+   ioname declarations for this task
+--- */
+
+Extern: TelIn_8_1			/* output to central office line */
+Local: silence_param	0		/* param buf */
+
+/* ---
+   modules and their interconnections
+--- */
+
+silence (BLevel)
+{
+	ain	TelIn_8_1
+	pbuf	silence_param
+}
+

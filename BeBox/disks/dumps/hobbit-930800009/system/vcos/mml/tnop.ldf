@@ -1,0 +1,10 @@
+/* tnop.ldf
+*/
+Sections
+{
+	main	sPROG
+	pbuf	sPARAM
+}
+CacheMem
+{
+}

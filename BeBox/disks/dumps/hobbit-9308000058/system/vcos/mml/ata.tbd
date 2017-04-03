@@ -1,0 +1,15 @@
+/* ata.tbd
+*/
+
+FrameRate:	100
+SampleRate:	8000
+FrameSize:	2*SampleRate/FrameRate
+
+Local: atain FrameSize
+Local: ataout FrameSize
+
+ata( BLevel)
+	{
+	ain 	atain
+	aout	ataout
+	}

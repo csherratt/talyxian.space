@@ -1,0 +1,34 @@
+/* ++++++++++
+	a2tf.tbd
+	Copyright (C) 1992 Be Inc.  All Rights Reserved.
+	Sample task build file for the 'two-AIAOs-to-fifo' module.
++++++ */
+
+FrameRate:	100
+SampleRate:	48000			/* your sample rate here! */
+FrameSamples:	SampleRate/FrameRate
+SampleSize:	2			/* your sample size in bytes here! */
+FrameSize:	SampleSize*FrameSamples
+FifoSize:	2*100*FrameSize		/* 1 sec of left AND right channels */
+
+
+/* -----
+	ionames
+----- */
+
+Local:	a2tfout		FifoSize
+Local:	a2tfin_left	FrameSize
+Local:	a2tfin_right	FrameSize
+
+
+/* -----
+	module(s)
+----- */
+
+a2tf(BLevel)
+{
+	fout 	a2tfout
+	ain_l 	a2tfin_left
+	ain_r 	a2tfin_right
+	cbuf	2*FrameSize
+}

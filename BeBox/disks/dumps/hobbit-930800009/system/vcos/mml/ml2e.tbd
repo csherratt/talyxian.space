@@ -1,0 +1,15 @@
+/* ml2e.tbd
+*/
+
+FrameSize:      2304                     /* Bytesize of one channel's frame  */
+
+Local:	ioname1	0 = 0 12 	/* reset,  mode parameters.          */
+Local:	ioname2	868
+Local:	ioname3	FrameSize
+
+ml2e( BLevel)
+	{
+	iparam  ioname1
+	ain     ioname3
+	fout    ioname2
+	}

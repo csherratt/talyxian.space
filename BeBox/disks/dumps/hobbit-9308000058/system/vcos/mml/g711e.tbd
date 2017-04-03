@@ -1,0 +1,14 @@
+/* g711e task file */
+FrameSize:      160             /* linear 16 bit samples */
+uFrameSize:     80              /* mulaw samples */
+
+Local:  input   FrameSize
+Local:  output  uFrameSize
+Local:  pbuff   0x00= 0x003      /* mode */
+
+g711e( BLevel)
+{   ain     input
+    aout    output
+    pbuf    pbuff
+}
+

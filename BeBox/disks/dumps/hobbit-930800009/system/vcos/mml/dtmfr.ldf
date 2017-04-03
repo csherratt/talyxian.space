@@ -1,0 +1,33 @@
+/*****************************************************************************/
+/*    DTMFR.LDF
+/*****************************************************************************/
+/* This module detects dtmf tones and runs on a 10mS frame.       SCS 4/1/1992
+/* Params: none
+/* Input : ain=  80 pcm samples = 160 bytes
+/* Ouput : fout= 1  long if a dtmf digit is detected.
+/*               If no digit is detected, then nothing is written to fout.
+/*               Each digit is output as 32 bits in the following hex format:
+/*                                      1209  1336  1477  1633 Hz  <-- hi band
+/*               low band:  697 Hz      1,    2,    3,    D
+/*                          770         4,    5,    6,    E
+/*                          852         7,    8,    9,    F
+/*                          941         B,    A,    C,   10
+/*
+/* Size: offchip= 2028 bytes + sizeof( fout ).
+/*       onchip = 1752 bytes.
+/*
+/* Time:   nI     nB     nR     nW    nRb    nWb    nBM    %STD_DSP
+/*       ------ ------ ------ ------ ------ ------ ------ ---------
+/*        3356     5     444    36     0       0      0      3.67
+/*****************************************************************************/
+Sections
+{   main    sPROG
+    cmain   sPROG
+    tmp     sPROG
+    ain     sAIAO   160   0
+    fout    sFIFO     8   4
+}
+
+CacheMem
+{   cmain   tmp   ain
+}

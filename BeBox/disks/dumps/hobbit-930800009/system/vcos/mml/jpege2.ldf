@@ -1,0 +1,23 @@
+Sections
+{
+	main2   sPROG
+	start   sPROG
+	cmain2  sPROG
+	init    sPROG
+	samper  sPROG
+	dglobs sPROG
+	jparms sPARAM
+	eififo sFIFO	644 	4
+	eofifo sFIFO	4100	4
+	mcudat sPROG
+}
+
+CacheMem
+{
+	   0: start
+	 368: cmain2
+	1096: dglobs
+	1344: samper
+	1928: mcudat
+	1928: init
+}

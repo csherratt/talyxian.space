@@ -1,0 +1,15 @@
+/* ftf.tbd
+*/
+
+FrameSize: 2304
+FifoSize: FrameSize+4
+
+Local:	ftf_in	FifoSize
+Local:	ftf_out	FifoSize
+
+ftf( BLevel)
+	{
+	fin ftf_in
+	fout ftf_out
+	temp FrameSize
+	}

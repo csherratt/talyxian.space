@@ -1,0 +1,32 @@
+/* ++++++++++
+	daa.ldf
+	Copyright (C) 1992-3 Be Inc.  All Rights Reserved.
+	Loader file for the daa driver for the Be Phone Card.
+
+	Modification History (most recent first):
+	23 sep 93	rwh	adapt for new phone card
+	30 jun 93	rwh	match new daa spec
+	18 may 92	rwh	new today
++++++ */
+
+Sections
+{
+	text		sPROG
+	ctext		sPROG
+	do_io		sPROG
+	dma		sAIAO   16 16
+	ain		sAIAO   4   4
+	aout		sAIAO   4   4
+	ainloc		sAIAO   4   4
+	aoutloc		sAIAO   4   4
+	cbuf		sAIAO	8   8
+	pvrm		sPARAM
+	pbuf		sPARAM
+}
+
+CacheMem
+{
+	ctext
+	do_io ain aout ainloc aoutloc cbuf
+}
+

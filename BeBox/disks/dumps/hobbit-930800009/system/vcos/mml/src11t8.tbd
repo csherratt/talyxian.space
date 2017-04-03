@@ -1,0 +1,11 @@
+/*    SRC11T8.TBD
+*/
+
+InSize:		220			/* 11.025ksps, 110 samples, 16 bit */
+OutSize:	(8*InSize)/11		
+
+src11t8( BLevel)
+	{
+	ain	InSize
+	aout	OutSize
+	}

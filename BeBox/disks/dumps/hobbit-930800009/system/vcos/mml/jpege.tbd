@@ -1,0 +1,14 @@
+/* task build file */
+
+Global: jpeals	0x0
+Local:	eoalas	1028
+Global: emalas	0x4000
+Local:	jqtab	0x0
+
+jpege( BLevel )
+{
+	jparms jpeals
+	jofifo eoalas
+	jififo emalas
+	qtab   jqtab
+}

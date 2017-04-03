@@ -1,0 +1,18 @@
+/* xi44t11.src 
+*/
+Extern: AudIn_44100_440_16_1
+Global: AudIn_22050_220_16_1	440
+Global: AudIn_11025_110_16_1	220
+
+src2t1( ILevel)
+{
+ain	AudIn_44100_440_16_1	
+aout 	AudIn_22050_220_16_1	
+}
+
+src2t1( ILevel)
+{
+ain 	AudIn_22050_220_16_1	
+aout	AudIn_11025_110_16_1
+}
+

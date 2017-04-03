@@ -1,0 +1,17 @@
+/*****************************************************************************/
+/* Copyright(c) 1990 AT&T Bell Laboratories, Department 528850
+/* All Rights Reserved
+/*****************************************************************************/
+
+
+/*****************************************************************************/
+/*    OS.LDF
+/*****************************************************************************/
+Sections                                 /* VCOS kernel.                     */
+{   _boot      sPROG                     /* this is the boot mover.          */
+    _vcos      sPROG                     /* this section has code.           */
+}
+
+Boot                                     /* "Boot" is the reserved CacheMem  */
+{   _vcos                                /*   label for the VCOS kernel.     */
+}

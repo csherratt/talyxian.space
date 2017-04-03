@@ -1,0 +1,99 @@
+/*    ML2E.LDF
+*/
+
+Sections
+	{
+	iparam  sPARAM
+	ain     sAIAO  2304  2304
+	fout    sFIFO   868     4
+	main    sPROG
+	cmain1  sPROG
+	state1  sPROG
+	tmp1    sPROG
+	tmp2    sPROG
+	cmain2  sPROG
+	tmp3    sPROG
+	cmain3  sPROG
+	tmp4    sPROG
+	cmain4  sPROG
+	tmp5    sPROG
+	tmp6    sPROG
+	tmp7    sPROG
+	tmp8    sPROG
+	tmp9    sPROG
+	tmp10   sPROG
+	tmp11   sPROG
+	tmp12   sPROG
+	tmp13   sPROG
+	tmp14   sPROG
+	tmp15   sPROG
+	tmp16   sPROG
+	cmain5  sPROG
+	cmain6  sPROG
+	table6  sPROG
+	cmain7  sPROG
+	cmain8  sPROG
+	cmain9  sPROG
+	cmaina  sPROG
+	tablea  sPROG
+	cmainb  sPROG
+	cmainc  sPROG
+	cmaind  sPROG
+	cmaine  sPROG
+	tablee  sPROG
+	cmainf  sPROG
+	cmaing  sPROG
+	}
+
+CacheMem
+	{
+	0: cmain1
+	120: cmain2
+	120: cmain3
+	0: cmain4
+	0: tmp2
+	2752: tmp3
+	2132: tmp4
+	2624: tmp5
+	6720: tmp6
+	4736: tmp7
+	6496: tmp8
+	4616: tmp9
+	392: tmp10
+	2632: tmp11
+	2304: tmp12
+	3072: tmp13
+	412: tmp14
+	5376: tmp15
+	1728: tmp16
+	0: cmain5
+	0: cmain6
+	120: cmain7
+	120: cmain8
+	0: cmain9
+	0: cmaina
+	120: cmainb
+	120: cmainc
+	0: cmaind
+	0: cmaine
+	120: cmainf
+	120: cmaing
+	}
+
+Profile
+{
+	m1:  36000000 301208 63 16616 0 0 0
+	m2:  36000000 301208 63 16616 0 0 0
+	m3:  36000000 301208 63 16616 0 0 0
+	m4:  36000000 301208 63 16616 0 0 0
+
+	m5:  26100000 274505 63 15541 0 0 0
+	m6:  26100000 274505 63 15541 0 0 0
+	m7:  26100000 274505 63 15541 0 0 0
+	m8:  26100000 274505 63 15541 0 0 0
+
+	m9:  24000000 261701 61 14822 0 0 0
+	m10: 24000000 261701 61 14822 0 0 0
+	m11: 24000000 261701 61 14822 0 0 0
+	m12: 24000000 261701 61 14822 0 0 0
+}

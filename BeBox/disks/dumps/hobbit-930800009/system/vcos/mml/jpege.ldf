@@ -1,0 +1,31 @@
+Sections
+{
+	main   sPROG
+	bmain  sPROG
+	cmain  sPROG
+	jglobs sPROG
+	jinit  sPROG
+	starsc sPROG
+	setup  sPROG
+	outdnl sPROG
+	coder  sPROG
+	jparms sPARAM
+	qtab   sPARAM
+	jofifo sFIFO	68 4
+	jififo sFIFO	644	4
+	sctext sPROG
+	savedt sPROG
+}
+
+CacheMem
+{
+	   0: bmain
+	 400: cmain
+	2000: jglobs
+	2216: qtab
+	3344: coder
+	3344: starsc
+	3344: setup
+	3344: jinit
+	3344: outdnl
+}

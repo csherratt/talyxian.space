@@ -1,0 +1,30 @@
+/* sildet.ldf
+/* this module monitors the ain buffer, and outputs the noise level,
+/* peak level, and silence count to the pbuf param buffer. 
+/* the syntax of pbuf is:
+/*
+/*	long nm			noise level
+/*	long peak		peak level
+/*	long silence		number of frames of silence 
+/*	long reserved[5]	reserved param area
+/*
+/* typically, this would be used in a TAM to monitor for silence by
+/* polling the silence param and quitting when silence exceeds 400 
+/* (ie: 4 seconds)
+/* Note that while this function will work with varying frame sizes,
+/* it is designed to be at, or around, 8000Hz, for accurate silence
+/* detection during speech.
+*/
+
+Sections
+	{
+	main	sPROG
+	cmain	sPROG
+	pbuf	sPARAM
+	temp	sPROG
+	ain	sAIAO 4 4
+	}
+CacheMem
+	{
+	cmain temp 
+	}

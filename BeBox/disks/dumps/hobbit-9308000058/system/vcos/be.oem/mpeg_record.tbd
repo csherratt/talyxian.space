@@ -1,0 +1,33 @@
+/* ++++++++++
+	mpeg_record.tbd
+	Copyright (C) 1992 Be Inc.  All Rights Reserved.
+	Task build file for the mpeg record task
+
+	Modification History (most recent first):
+	02 feb 93	rwh	new today
++++++ */
+
+FrameSamples:	1152
+SampleSize:	2
+AiaoSize:	SampleSize*FrameSamples		/* No of bytes per frame */
+FifoSize:	100*AiaoSize			/* fifo size is N*AiaoSize */
+
+/* ---
+   ioname declarations for this task
+--- */
+
+Local: mpeg_encode_param 0 = 0 12	/* default no reset, 192 kbps/48khz */
+Local: mpeg_fifo FifoSize		/* fifo buffer for input from host */
+Extern: left_microphone			/* audio device driver speaker AIAO */
+
+/* ---
+   modules and their interconnections
+--- */
+
+ml2e (BLevel)				/* mpeg encoder -> fifo */
+{
+	iparam	mpeg_encode_param
+	fout 	mpeg_fifo
+	ain	left_microphone
+}
+

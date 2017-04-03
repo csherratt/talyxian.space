@@ -1,0 +1,16 @@
+/*    sbc16.ldf
+*/
+
+Sections
+	{
+	main    sPROG
+	cmain   sPROG
+	state   sPROG
+	ain 	sAIAO  32	32
+	aout	sAIAO  4	4
+	}
+
+CacheMem
+	{
+	cmain state ain aout
+	}

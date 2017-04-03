@@ -1,0 +1,11 @@
+/* vatax.tbd
+*/
+
+FrameSize:	160
+
+vatax( BLevel)
+	{
+	ain	FrameSize
+	aout	FrameSize
+	pbuf	0x0
+	}

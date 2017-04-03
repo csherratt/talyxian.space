@@ -1,0 +1,25 @@
+/* src2t1.ldf 
+*/
+
+Sections
+	{
+	main	sPROG
+	cmain	sPROG
+	dbuf	sPROG
+	fbuf	sPROG
+	ain 	sAIAO	4	4
+	aout	sAIAO	8	8
+	}
+
+CacheMem
+	{
+	0x0: cmain dbuf fbuf ain aout
+	}
+ 
+Profile
+{
+	m8:	0 3303 11 282 112 0 0 0
+	m11:	0 4465 11 297 142 0 0 0
+	m16:	0 6403 11 322 192 0 0 0
+	m22:	0 8728 11 352 252 0 0 0
+}

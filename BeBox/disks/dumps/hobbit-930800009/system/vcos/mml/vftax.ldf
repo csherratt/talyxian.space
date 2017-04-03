@@ -1,0 +1,17 @@
+/* vftax loader file 
+*/
+
+Sections
+	{
+	main	sPROG
+	cmain	sPROG
+	fin 	sFIFO	8	4
+	ain 	sAIAO	4	4
+	aout	sAIAO	4	4
+	pbuf	sPARAM
+	}
+
+CacheMem
+	{
+	cmain ain aout
+	}

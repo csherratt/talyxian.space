@@ -1,0 +1,12 @@
+/* delay.ldf
+*/
+
+Sections
+	{
+	main sPROG
+	cmain1 sPROG
+	cmain2 sPROG
+	ain sAIAO 4 4
+	aout sAIAO 4 4
+	fio sFIFO 8 4
+	}

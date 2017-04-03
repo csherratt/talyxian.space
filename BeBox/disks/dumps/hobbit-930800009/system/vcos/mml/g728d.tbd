@@ -1,0 +1,16 @@
+/*****************************************************************************/
+/*    G728D.TBD
+/*****************************************************************************/
+FrameSize:    160                      /* Each output is 2 bytes.            */
+ChanSize:     FrameSize/8              /* One coded sample = 2 bits          */
+
+Local: speech    FrameSize
+Local: codewords ChanSize              /* LDCELP codewords to decoder        */
+Local: modeparam 0x0
+
+g728d( BLevel )                        
+{   pin          modeparam             /* 1 long: mode.                      */
+    ain          codewords
+    aout         speech
+}
+

@@ -1,0 +1,16 @@
+/* vftax2.tbd
+*/
+FrameSize:	160
+
+Local:	aiao_in	FrameSize
+Local:	aiao_out FrameSize
+Local:	p_vftax	0x0	/* volume, status */
+			/* volume: ieee float */
+			/* status: 0=> fin empty, else fin size */
+
+vftax2( BLevel)
+	{
+	ain	aiao_in
+	aout	aiao_out
+	pbuf	0x0
+	}

@@ -1,0 +1,18 @@
+/***************************************************************************/
+/*   CID (CallerID) task build file
+/***************************************************************************/
+
+FrameRate:      100
+SampleRate:     8000
+FrameSize:      2*SampleRate/FrameRate
+
+Local:  cidparam  0
+Local:  cid_in    FrameSize
+Local:  cid_out   160
+
+cid( BLevel)
+{
+    iparam  cidparam
+    ain     cid_in
+    fout    cid_out
+}

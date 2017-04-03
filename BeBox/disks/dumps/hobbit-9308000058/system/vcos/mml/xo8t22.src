@@ -1,0 +1,48 @@
+/* xo8t22.src
+*/
+
+Global: AudOut_8000_80_16_1	160
+Local: 	x11			220
+Global: AudOut_11025_110_16_1	220
+Local: 	x22			440
+Extern: AudOut_22050_220_16_1	
+
+/* 8t11 */
+src8t11( ILevel)
+{
+ain	AudOut_8000_80_16_1
+aout	x11
+}
+
+clra( ILevel)
+{
+ain	AudOut_8000_80_16_1
+}
+
+vatax( ILevel)
+{
+ain	x11
+aout	AudOut_11025_110_16_1	
+pbuf	0x0
+}
+
+/* 11t22 */
+src1t2( ILevel)
+{
+ain	AudOut_11025_110_16_1	
+aout	x22
+}
+
+clra( ILevel)
+{
+ain	AudOut_11025_110_16_1	
+}
+
+vatax( ILevel)
+{
+ain	x22
+aout 	AudOut_22050_220_16_1	
+pbuf	0x0
+}
+
+

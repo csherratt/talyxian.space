@@ -1,0 +1,34 @@
+/*****************************************************************************/
+/*    CNGD.LDF
+/*****************************************************************************/
+/* This module detects the CCITT T30 CNG tone.                  SCS 06/13/1993
+/* The CNG is centered at 1100 Hz (+- 38 Hz).  It is on for .5 s, off for 3 s.
+/* Timing is +- 15%.
+/*
+/* Input : ain= 80 pcm samples.
+/* Output: pbuf= param buffer with 1 long and 2 floats.
+/*               long tp_last3s; if tone present now:           value = 1
+/*                               if tone present within last 3 s:     = 2->300.
+/*                               if tone not present within last 3 s: = 0
+/*               float avg_abs_pcm; ieee float gives average of absolute val
+/*                                  of the 80 pcms in the frame.
+/*               float avg_abs_filtd; ieee float gives average of abs val of
+/*                                  the 80 pcms after bandstop filtering.
+/*
+/* Size  : offchip= 1304 bytes.
+/*         onchip =  944 bytes.
+/*
+/* Time  :   nI     nB     nR     nW    nRb    nWb    nBM    %STD_DSP
+/*         ------ ------ ------ ------ ------ ------ ------ ---------
+/*          2803    5      208    14     0      0      0       2.63
+/*****************************************************************************/
+Sections
+{   main   sPROG
+    cmain  sPROG
+    pbuf   sPARAM
+    temp   sPROG
+    ain    sAIAO  160   0
+}
+CacheMem
+{   cmain  temp
+}

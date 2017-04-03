@@ -1,0 +1,26 @@
+/* xo16t22.src
+*/
+
+Global: AudOut_16000_160_16_1	320
+Local: 	x22			440
+Extern: AudOut_22050_220_16_1	
+
+/* 16t22 */
+src8t11( ILevel)
+{
+ain	AudOut_16000_160_16_1
+aout	x22
+}
+
+clra( ILevel)
+{
+ain	AudOut_16000_160_16_1
+}
+
+vatax( ILevel)
+{
+ain	x22
+aout 	AudOut_22050_220_16_1	
+pbuf	0x0
+}
+

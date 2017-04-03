@@ -1,0 +1,19 @@
+
+/**********************************************************************/
+/* Background Scheduler 
+*/
+//IdleTime:		10	/* number of nops in .1ms increments */
+ILevelTimer:		DspClock/(2*102)
+Local: p_schedule	0x0 = ILevelTimer
+//Local: p_tnop		0x0 = IdleTime	
+
+schedule( BLevel)
+	{
+	pbuf p_schedule
+	}
+
+//tnop( BLevel)
+// 	{
+// 	pbuf	p_tnop
+// 	}
+

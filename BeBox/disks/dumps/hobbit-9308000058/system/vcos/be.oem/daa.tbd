@@ -1,0 +1,37 @@
+/*name and version number:@(#)v3210_tbd.h	2.4*/
+/*date of get: 		  1/12/93 17:19:22*/
+/*date of delta:	  11/8/92 16:52:06*/
+
+
+
+SampleSize:	80
+
+Consize:        2*SampleSize            /* constellation data size*/
+dmaBufSize:	2*Consize		/* each dma has CO AND local line */
+adaBufferSize:  4*dmaBufSize		/* 4 sets of dma buffers (2 in, 2 out) */
+
+Local: cached_buf dmaBufSize
+Local: daa_local adaBufferSize
+Global: TelIn_8_1  Consize
+Global: TelOut_8_1 Consize
+Global: LocIn_8_1  Consize
+Global: LocOut_8_1 Consize
+Global: TelCon_8_1	0
+Local: pVrmCon		0
+
+
+
+daa (BLevel)
+{
+	dma	daa_local
+	aout	TelIn_8_1
+	ain	TelOut_8_1
+	aoutloc	LocIn_8_1
+	ainloc	LocOut_8_1
+	cbuf	cached_buf
+	pbuf	TelCon_8_1
+	pvrm	pVrmCon
+}
+
+
+

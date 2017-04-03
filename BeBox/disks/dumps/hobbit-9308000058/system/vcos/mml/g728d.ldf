@@ -1,0 +1,18 @@
+/*    G728D.LDF
+*/
+
+Sections
+	{
+	main    sPROG
+	pin     sPARAM
+	ain     sAIAO  20 0
+	aout    sAIAO 160 0
+	cmain   sPROG
+	cmain2  sPROG
+	}
+
+CacheMem
+	{
+	0x0: cmain  ain  aout
+	0x0: cmain2
+	}

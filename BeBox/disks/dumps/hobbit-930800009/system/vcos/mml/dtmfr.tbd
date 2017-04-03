@@ -1,0 +1,16 @@
+/*****************************************************************************/
+/*    DTMFR.TBD
+/*****************************************************************************/
+FrameRate:   100
+SampleRate:  8000
+FrameSize:   2*SampleRate/FrameRate
+SymBuf:      128             /* max number of symbols to buffer */
+FifoSize:    SymBuf*4
+
+Local:       dtmfrIn  FrameSize
+Local:       dtmfrOut FifoSize
+
+dtmfr( BLevel)
+{   ain      dtmfrIn
+    fout     dtmfrOut
+}

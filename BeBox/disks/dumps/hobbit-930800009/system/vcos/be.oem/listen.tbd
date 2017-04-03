@@ -1,0 +1,15 @@
+/* listen task file */
+
+FrameRate:      100             /* No of frames per second */
+FrameSamples: 	8000/FrameRate  /* No of 16-bit samples per frame */
+AiaoSize:	2*FrameSamples	/* No of bytes per frame */
+FifoSize:	200        	/* this many digits */
+
+Extern: TelIn_8_1                /* connect to phone device driver */
+Local:	dtmfrOut FifoSize
+
+dtmfr( BLevel)
+	{
+	ain	TelIn_8_1
+	fout	dtmfrOut
+	}

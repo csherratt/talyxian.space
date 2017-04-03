@@ -1,0 +1,23 @@
+/* uvftax.tbd
+*/
+
+FrameRate:	100
+SampleRate:	8000
+FrameSize:      2*SampleRate/FrameRate /* linear 16 bit samples */
+dmaBufferSize:  2*4*FrameSize          /* 2 *( lmic +rmic +lspkr +rspkr) */
+uFrameSize:     FrameSize/2            /* mulaw 8 bit samples */
+uFifoSize:      500*uFrameSize         /* record and play fifos */
+
+Local:  uftax_in	uFifoSize
+Local:  uftax_b		uFrameSize
+Local:  uftax_p		0x0
+Local:  ls    		FrameSize
+
+uvftax(BLevel)
+	{
+	output  ls
+	input   uftax_in
+	abuf    uftax_b
+	vparam   uftax_p
+	}
+

@@ -1,0 +1,11 @@
+/* clra.ldf 
+*/
+Sections
+	{
+	main	sPROG
+	ain 	sAIAO 4 4
+	}
+
+CacheMem
+	{
+	}

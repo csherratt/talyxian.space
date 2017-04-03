@@ -1,0 +1,16 @@
+/* throttle.ldf
+*/
+
+Sections
+	{
+	main	sPROG
+	cmain	sPROG
+	fin	sFIFO	4	4
+	fout	sFIFO	4	4
+	pbuf	sPARAM
+	}
+
+CacheMem
+	{
+	cmain		/* must be onchip */
+	}

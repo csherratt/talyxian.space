@@ -1,0 +1,29 @@
+Sections
+{
+	main2  sPROG
+	cmain2 sPROG
+	scc    sPROG
+	ecc    sPROG
+	dsetup sPROG
+	dinitc sPROG
+	piparm sPARAM
+	poparm sPARAM
+	dsparm sPARAM
+	dspoc  sPROG
+	dglobs sPROG
+	mcudat sPROG
+	dififo sFIFO	644 	4
+	dofifo sFIFO	4100	4
+}
+
+CacheMem
+{
+	0:    cmain2
+	1240: scc
+	1240: ecc
+	1636: dglobs
+	1732: dspoc
+	2072: mcudat
+	5000: dsetup
+	6000: dinitc
+}

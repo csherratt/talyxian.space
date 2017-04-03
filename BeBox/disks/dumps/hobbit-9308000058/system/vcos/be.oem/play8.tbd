@@ -1,0 +1,34 @@
+/* ++++++++++
+	play8.tbd
+	Copyright (C) 1993-4 Be Inc.  All Rights Reserved.
+	Task build file for the audio play task
+
+	Modification History (most recent first):
+	26 Oct 93	ehk	modified for 8 kHz sound
+	18 dec 92	rwh	new today
++++++ */
+
+FrameRate:	100
+SampleRate:	8000
+FrameSamples:	SampleRate/FrameRate
+SampleSize:	2
+AiaoSize:	SampleSize*FrameSamples		/* No of bytes per frame */
+FifoSize:	100*AiaoSize			/* 1 sec of mono */
+
+/* ---
+   ioname declarations for this task
+--- */
+
+Local: spkr_fifo FifoSize		/* fifo buffer for input from host */
+Extern: left_speaker			/* audio driver left speaker AIAO */
+
+/* ---
+   modules and their interconnections
+--- */
+
+fta(BLevel)				/* host fifo -> speaker aiao */
+{
+	fin 	spkr_fifo
+	aout	left_speaker
+}
+

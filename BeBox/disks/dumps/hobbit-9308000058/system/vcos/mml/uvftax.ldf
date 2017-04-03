@@ -1,0 +1,16 @@
+/* uvftax loader file 
+*/
+Sections
+        {
+        main    sPROG
+        cmain   sPROG
+        input   sFIFO   8       4
+        output  sAIAO   8       8
+        abuf    sAIAO   8       8
+        vparam  sPARAM
+        }
+
+CacheMem
+        {
+        cmain input output abuf
+        }

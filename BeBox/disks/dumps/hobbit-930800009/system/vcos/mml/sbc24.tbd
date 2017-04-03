@@ -1,0 +1,18 @@
+/* sbc24.tbd
+*/
+
+FrameRate:	100
+SampleRate:	8000
+FrameSize:	2*SampleRate/FrameRate
+SbcSize:	FrameSize/4	/* 128kbps PCM -> 32kbps subband coded data */
+				/* every 4th byte is zero, really 24kbps */
+
+Local:	sbcin	FrameSize
+Local:	sbcout	SbcSize
+
+sbc24( BLevel)
+	{
+	ain 	sbcin
+	aout	sbcout	
+	}
+

@@ -1,0 +1,13 @@
+/*****************************************************************************/
+/*    G728E.TBD
+/*****************************************************************************/
+FrameSize:        160                  /* 80 samples @ 2 bytes each          */
+ChanSize:         FrameSize/8          /* One coded sample= 2 bits           */
+
+Local: speech     FrameSize            /* FIFO output to host                */
+Local: codewords  ChanSize             /* LDCELP codewords from encoder      */
+
+g728e( BLevel )                        
+{   ain           speech
+    aout          codewords
+}

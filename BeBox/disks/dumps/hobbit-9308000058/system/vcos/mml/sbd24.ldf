@@ -1,0 +1,15 @@
+/*    sbd24.ldf
+*/
+Sections
+{
+main    sPROG
+cmain   sPROG
+state   sPROG
+ain 	sAIAO    4   4
+aout 	sAIAO    16	16
+}
+
+CacheMem
+{
+cmain state ain aout
+}

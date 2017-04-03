@@ -1,0 +1,22 @@
+/* ++++++++++
+	a2tf.ldf
+	Copyright (C) 1993 Be Inc.  All Rights Reserved.
+	Loader file for the a2tf moudule, which combines left and right
+	channel AIAOs into a FIFO.
++++++ */
+
+Sections
+{
+	text		sPROG
+	ctext		sPROG
+	fout		sFIFO	8   8
+	ain_l		sAIAO   4   4
+	ain_r		sAIAO   4   4
+	cbuf		sAIAO	8   8
+}
+
+CacheMem
+{
+	cbuf ain_l ain_r ctext
+}
+

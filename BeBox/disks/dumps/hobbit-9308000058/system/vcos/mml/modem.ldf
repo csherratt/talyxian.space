@@ -1,0 +1,188 @@
+/*name and version number:@(#)v3210_ldf.h	2.8*/
+/*date of get: 		  8/16/93 18:13:06*/
+/*date of delta:	  7/23/93 15:41:02*/
+
+Sections
+{
+ v29h_P		sPROG
+ v29h_S		sPROG
+ v27t_P		sPROG
+ v27h_S		sPROG
+ v27h_P		sPROG
+ v22t_P		sPROG
+ v22h_S		sPROG
+ v22h_P		sPROG
+ v32h_S		sPROG
+ v32h_P		sPROG
+ dtmf_H		sPROG
+ host_H   	sPROG
+ HostCS  	sPARAM
+
+ daaP		sPARAM
+
+ dsp_D    	sPROG
+ dsp_A    	sPROG
+ tim_S		sPROG
+ tim_A		sPROG
+ t_Pv32		sPROG
+ tim_Pco	sPROG
+ v32s_P	 	sPROG
+ v32s_S	 	sPROG
+ sequ_P	 	sPROG
+ sequ_S	 	sPROG
+ tjam_P		sPROG
+ equ_P	 	sPROG
+ equ_S	 	sPROG
+ fequ_P	 	sPROG
+ equ27_P 	sPROG
+ equ22_P 	sPROG
+ equ_A		sPROG
+ v32_H		sPROG
+ v29_H	 	sPROG
+ v22_H	 	sPROG
+ v17_H		sPROG
+
+ s8096_P	sPROG
+ s8072_P	sPROG
+ s9680_P	sPROG
+ s9680_S	sPROG
+ s7280_P	sPROG
+ s7280_S	sPROG
+
+ src_S		sPROG
+ auto_H	 	sPROG
+ tf29_P	 	sPROG
+ tf22_P	 	sPROG
+ tmf_P	 	sPROG
+ tmf_S	 	sPROG
+ trx_P	 	sPROG
+ trx32_P 	sPROG
+ trx_S	 	sPROG
+ vit_P	 	sPROG
+ vit_S	 	sPROG
+ fgen_P	 	sPROG
+ fgen_S	 	sPROG
+ dftd_P	 	sPROG
+ dftd_S	 	sPROG
+ gen_P	 	sPROG
+ gen_S	 	sPROG
+ rdet_P	 	sPROG
+ rdet_S	 	sPROG
+ agc_P	 	sPROG
+ agc_S	 	sPROG
+ v29md_P	sPROG
+ v29md_S	sPROG
+ v29md_A	sPROG
+ tdet_P	 	sPROG
+ tdet_S	 	sPROG
+ tdfir_P	sPROG
+ tdfir_S	sPROG
+ hdlc_P	 	sPROG
+ hdlc_rP	sPROG
+ hdlc_rS	sPROG
+ hdlc_tP	sPROG
+ hdlc_tS	sPROG
+ grate_P	sPROG
+ grate_S	sPROG
+ fsk_P	 	sPROG
+ ftx_P		sPROG
+ frv_P		sPROG
+ fsk_S	 	sPROG
+ tdfsk_P	sPROG
+ fsk_H	 	sPROG
+
+ cid_H	 	sPROG
+
+ idr_P	  	sPROG
+ idr_S	  	sPROG
+ rcv_P	  	sPROG
+ rcv32_P  	sPROG
+ rcv_S	  	sPROG
+ gtone_P	sPROG
+ gtone_S	sPROG
+ dscr1_P	sPROG
+ dscr1_S	sPROG
+ snec_P	  	sPROG
+ tnec_P	  	sPROG
+ nec_P	  	sPROG
+ nec_S	  	sPROG
+ bulk_H	  	sPROG
+ app_P	  	sPROG
+ app_S	  	sPROG
+ wdiir_P	sPROG
+ wdiir_S	sPROG
+ p_in		sPROG 	
+ aiao_48	sPROG     
+ chk_P		sPROG
+
+ daacon	 	sAIAO     80    80 
+ input	 	sAIAO	  80	80
+ output	 	sAIAO	  80    80 
+ xout	 	sAIAO     80    80 
+ yout	 	sAIAO     80    80 
+ InData		sFIFO	1280	1280
+ OData		sFIFO	1280	1280
+
+}
+
+CacheMem
+{
+  0x0: 	 	dsp_D dsp_A equ_A	
+
+  0x800:	tim_Pco tim_A tim_S
+  0xf00:	t_Pv32
+  0xf00:	v27t_P 
+  0xf00: 	v22t_P	
+
+  0x800:	v32h_P v32h_S
+  0x800:	v29h_P v29h_S
+  0x800:	v27h_P v27h_S
+  0xc00:	v22h_P v22h_S	/* v22 use agc 	*/
+  0x800: 	agc_P agc_S
+
+
+  0x800:	sequ_S sequ_P
+  0x800:	tjam_P
+
+  0x800:	s7280_S s7280_P
+  0x800:	src_S s8072_P
+  0xb60:	s8096_P			/* load src_S before s8096_P */
+  0x800:	s9680_S s9680_P
+
+  0x800:	grate_P	grate_S	
+  0x800:	fgen_P fgen_S	
+  0x800:        tdfir_S tdfir_P
+  0x910:	tdfsk_P
+  0x800:        gen_S gen_P
+  0x800:	tdet_S tdet_P
+  0x800:	trx_S
+  0x910:	trx_P
+  0x910:	trx32_P
+  0x800:	vit_S vit_P
+  0x800:	rdet_S rdet_P
+  0x800:	gtone_S gtone_P
+  0x800:	wdiir_S wdiir_P
+  0x800:	dftd_S dftd_P
+  0x800:	dscr1_S dscr1_P
+  0x800:	fsk_S fsk_P ftx_P frv_P
+  0x800:	v29md_S v29md_A v29md_P
+  0x800:	rcv_S 
+  0x840:        rcv_P
+  0x840:        rcv32_P
+  0x800:	idr_S idr_P
+  0x800:	tmf_S  
+  0xa00:	tmf_P
+  0xa00:	tf29_P
+  0xa00:	tf22_P
+  0x800:	equ_S v32s_S v32s_P
+  0xd40:	equ_P
+  0xcf0:	fequ_P
+  0xcf0:	equ27_P
+  0xcf0:	equ22_P
+  0x800:	hdlc_P 
+  0x900:	hdlc_rP hdlc_rS
+  0x900:	hdlc_tP hdlc_tS
+  0x800:	snec_P	  	
+  0x800:	tnec_P nec_P nec_S	  		  	
+  0x800:	app_P app_S	  	
+}

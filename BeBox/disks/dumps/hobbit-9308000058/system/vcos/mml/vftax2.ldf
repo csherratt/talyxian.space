@@ -1,0 +1,14 @@
+/* vatax loader file */
+Sections
+	{
+	main	sPROG
+	cmain	sPROG
+	ain 	sAIAO	4	4
+	aout	sAIAO	4	4
+	pbuf	sPARAM
+	}
+
+CacheMem
+	{
+	cmain ain aout
+	}

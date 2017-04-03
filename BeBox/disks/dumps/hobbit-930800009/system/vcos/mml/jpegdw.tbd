@@ -1,0 +1,41 @@
+/* task build file */
+
+Local: jpalas 0x0               /* Parameter buffer for host-DSP communication. */
+Local: dsparm 0x0               /* Parameter buffer for DSP-DSP module communication. */
+Local: joalas 0x2000    /* Intermediate FIFO between jpegd and jpegd2 */
+Local: ijp1o  0x0               /* Scan parameter buffer. */
+Local: fialas 0x8000    /* Input FIFO buffer. */
+Local: ijp1ao  0x0              /* Scan parameter buffer. */
+Local: ijp2o  0x0               /* Scan parameters for dib640 module. */
+Local: doalas 0xb000    /* Output FIFO buffer. */
+Local: pfalas 0x3000    /* Second intermediate buffer. */
+Local: ppalas 0x0               /* post-processing parameter buffer. */
+Local: temp1 0x0                /* Buffer to hold output row data. */
+
+jpegd( BLevel )
+{
+	fifo0  fialas
+	jparms jpalas
+	dsparm dsparm
+	cofifo 0x2000
+	jofifo joalas
+	poparm ijp1o
+}
+
+jpegd2( BLevel )
+{
+	dsparm dsparm
+	piparm ijp1o
+	poparm ijp1ao
+	dififo joalas
+	dofifo pfalas
+}
+
+dib640( BLevel )
+{
+	dififo pfalas
+	dofifo doalas
+	drdata temp1
+	piparm ijp1ao
+	poparm ijp2o
+}

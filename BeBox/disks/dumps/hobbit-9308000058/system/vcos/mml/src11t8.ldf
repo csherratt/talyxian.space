@@ -1,0 +1,23 @@
+/*    SRC11T8.LDF
+*/
+
+Sections
+	{
+	main    sPROG
+	ain     sAIAO  220   44
+	aout    sAIAO  160   32
+	cmain1  sPROG
+	tmp     sPROG
+	}               
+
+CacheMem
+	{   
+	0x00:   cmain1 tmp
+	}
+
+Profile
+{
+	m11:	0  7084 5 582  78 0 0 0
+	m22:	0 13761 5 637 118 0 0 0
+	m44:	0 27116 5 747 198 0 0 0
+}

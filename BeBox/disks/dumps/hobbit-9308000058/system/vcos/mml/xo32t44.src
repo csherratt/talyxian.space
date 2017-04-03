@@ -1,0 +1,26 @@
+/* xo32t44.src
+*/
+
+Global: AudOut_32000_320_16_1	640
+Local: 	x44			880
+Extern: AudOut_44100_440_16_1
+
+/* 32t44 */
+src8t11( ILevel)
+{
+ain 	AudOut_32000_320_16_1	
+aout	x44
+}
+
+clra( ILevel)
+{
+ain 	AudOut_32000_320_16_1	
+}
+
+vatax( ILevel)
+{
+ain	x44
+aout	AudOut_44100_440_16_1	
+pbuf	0x0
+}
+

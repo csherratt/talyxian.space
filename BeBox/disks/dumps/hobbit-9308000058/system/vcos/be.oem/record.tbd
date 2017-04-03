@@ -1,0 +1,36 @@
+/* ++++++++++
+	record.tbd
+	Copyright (C) 1992 Be Inc.  All Rights Reserved.
+	Task build file for the audio record task
+
+	Modification History (most recent first):
+	18 dec 92	rwh	new today
++++++ */
+
+FrameRate:	100
+SampleRate:	48000
+FrameSamples:	SampleRate/FrameRate
+SampleSize:	2
+AiaoSize:	SampleSize*FrameSamples		/* No of bytes per frame */
+FifoSize:	2*100*AiaoSize			/* 1 sec of left & right */
+
+/* ---
+   ioname declarations for this task
+--- */
+
+Local: mic_fifo FifoSize		/* fifo buffer for output to host */
+Extern: left_microphone			/* audio driver left microphone AIAO */
+Extern: right_microphone		/* audio driver right microphone AIAO */
+
+/* ---
+   modules and their interconnections
+--- */
+
+a2tf(BLevel)				/* l,r mic aiao -> host fifo */
+{
+	fout 	mic_fifo
+	ain_l	left_microphone
+	ain_r	right_microphone
+	cbuf	2*AiaoSize
+}
+

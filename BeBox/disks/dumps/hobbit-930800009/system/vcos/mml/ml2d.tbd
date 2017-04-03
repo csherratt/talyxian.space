@@ -1,0 +1,15 @@
+/*    ml2d.tbd
+*/
+
+FrameSize:      2304                   /* Bytesize of one channel's frame    */
+
+Local:  ioname1		0= 1 0 12      /* ltor, reset, mode parameters.      */
+Local:  ioname2		1000
+Local:  ioname3		FrameSize
+
+ml2d( BLevel)
+	{
+	iparam  ioname1
+	fin     ioname2
+	aout    ioname3
+	}

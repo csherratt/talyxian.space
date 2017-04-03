@@ -1,0 +1,16 @@
+Sections
+{
+	main2   sPROG
+	cmain2  sPROG
+	piparm sPARAM
+	poparm sPARAM
+	dglobs sPROG
+	mcudat sPROG
+	dififo sFIFO	644 	4
+	dofifo sFIFO	4100	4
+}
+
+CacheMem
+{
+	cmain2 dglobs mcudat
+}

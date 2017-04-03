@@ -1,0 +1,11 @@
+/* src1t2.tbd
+*/
+
+InSize:    160			/* 8.0ksps, 80 samples, 16 bit */
+OutSize:   2*InSize
+
+src1t2( BLevel)
+	{
+	ain 	InSize
+	aout	OutSize
+	}

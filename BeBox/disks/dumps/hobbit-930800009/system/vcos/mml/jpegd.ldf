@@ -1,0 +1,49 @@
+Sections
+{
+	main   sPROG
+	cmain  sPROG
+	jglobs sPROG
+	dcoff  sPROG
+	dimage sPROG
+	mcudat sPROG
+	mcud2  sPROG
+	jinit  sPROG
+	gethuf sPROG
+	ffmark sPROG
+	getpar sPROG
+	gscanp sPROG
+	common sPROG
+	calmcu sPROG
+	jparms sPARAM
+	poparm sPARAM
+	dsparm sPARAM
+	qtab   sPROG
+	jhtabs sPROG
+	gblock sPROG
+	jofifo sFIFO	644	4
+	cofifo sFIFO	644 4
+	fifo0  sFIFO	36 4
+	sctext sPROG
+	savedt sPROG
+}
+
+CacheMem
+{
+ 	   0: cmain
+	1356: jglobs
+	2016: dcoff
+	2016: dimage
+	2016: jinit
+	2760: gblock
+	3168: gethuf
+	3168: getpar
+	3168: gscanp
+	3700: mcud2
+	4460: mcudat
+	4460: ffmark
+	5290: qtab
+	5290: jhtabs
+	5628: calmcu
+	6374: common
+	   0: savedt
+}

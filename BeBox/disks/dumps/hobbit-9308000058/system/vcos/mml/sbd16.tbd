@@ -1,0 +1,16 @@
+/* sbd16.tbd
+*/
+
+FrameRate:	100
+SampleRate:	8000
+FrameSize:	2*SampleRate/FrameRate	/* Bytesize of one channel's frame */
+SbcSize:	FrameSize/8		/* 128kbps pcm -> 16kbps subband code */
+
+Local:	sbdin	SbcSize
+Local:	sbdout	FrameSize
+
+sbd16( BLevel)
+	{
+	ain 	sbdin
+	aout	sbdout
+	}
